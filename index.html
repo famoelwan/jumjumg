@@ -1,0 +1,2803 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#0f172a">
+<title>جمجم — عالم الأذكياء | by Famo</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{
+  --pink:#ec4899;--pink-2:#f472b6;--green:#10b981;--green-2:#34d399;
+  --navy:#0f172a;--navy-2:#1e293b;--navy-3:#020617;
+  --gold:#fbbf24;--gold-2:#f59e0b;
+  --text:#f1f5f9;--dim:#94a3b8;
+  --border:rgba(251,191,36,.22);--border-2:rgba(251,191,36,.55);
+  --surface:rgba(15,23,42,.65);--surface-2:rgba(30,41,59,.75);
+  --safe-t:max(10px,env(safe-area-inset-top));--safe-b:max(10px,env(safe-area-inset-bottom));
+}
+html,body{height:100%;overflow-x:hidden}
+body{
+  font-family:"Cairo","Segoe UI",Tahoma,sans-serif;
+  background:var(--navy-3);color:var(--text);line-height:1.55;
+  min-height:100dvh;padding:0;font-size:15px;
+  background-image:radial-gradient(ellipse at 15% 0%,rgba(236,72,153,.22),transparent 45%),
+    radial-gradient(ellipse at 85% 100%,rgba(16,185,129,.2),transparent 45%),
+    radial-gradient(ellipse at 50% 50%,rgba(251,191,36,.08),transparent 55%),
+    url('https://famo-pic.gt.tc/view.php?k=1eee7899301f57e4a5ee627b4249300cd22fa752305d319b');
+  background-size:cover;background-position:center;background-attachment:fixed;background-blend-mode:multiply;
+}
+body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:linear-gradient(135deg,rgba(15,23,42,.85),rgba(2,6,23,.92))}
+body::after{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.12;
+  background-image:radial-gradient(circle,#fbbf24 1px,transparent 1px);
+  background-size:40px 40px;animation:gridDrift 40s linear infinite}
+@keyframes gridDrift{to{background-position:40px 40px}}
+.app{position:relative;z-index:1;width:100%;min-height:100dvh;padding-top:var(--safe-t);
+  padding-bottom:calc(80px + var(--safe-b));max-width:800px;margin:0 auto}
+.screen{display:none;padding:14px 14px 20px}
+.screen.active{display:block;animation:fadeSlide .4s ease}
+@keyframes fadeSlide{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+.screen.no-tab{padding-bottom:20px}
+
+/* SPLASH */
+#scr-splash .app-inner{display:none}
+#scr-splash.active .app-inner{display:flex;flex-direction:column;align-items:center;
+  justify-content:center;min-height:calc(100dvh - var(--safe-t) - var(--safe-b));
+  text-align:center;padding:20px;position:relative;overflow:hidden}
+.splash-bg{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:0}
+.splash-bg::before{content:"";position:absolute;top:-50%;left:-50%;width:200%;height:200%;
+  background:conic-gradient(from 0deg,transparent 0deg,rgba(251,191,36,.15) 30deg,transparent 60deg,
+    transparent 180deg,rgba(236,72,153,.12) 210deg,transparent 240deg);
+  animation:slowSpin 25s linear infinite}
+@keyframes slowSpin{to{transform:rotate(360deg)}}
+.splash-logo{width:150px;height:150px;border-radius:38px;position:relative;z-index:1;
+  border:3px solid var(--gold);overflow:hidden;cursor:pointer;
+  animation:logoIn .9s cubic-bezier(.2,1.2,.4,1) both,glowPulse 3s ease-in-out infinite 1s;
+  box-shadow:0 0 60px rgba(251,191,36,.55),0 0 120px rgba(236,72,153,.35);
+  transition:transform .2s;display:flex;align-items:center;justify-content:center}
+.splash-logo:active{transform:scale(.93)}
+.splash-logo img{width:100%;height:100%;object-fit:cover}
+@keyframes logoIn{from{transform:scale(0) rotate(-180deg);opacity:0}to{transform:none;opacity:1}}
+@keyframes glowPulse{
+  0%,100%{box-shadow:0 0 60px rgba(251,191,36,.55),0 0 120px rgba(236,72,153,.35)}
+  50%{box-shadow:0 0 90px rgba(251,191,36,.85),0 0 160px rgba(236,72,153,.55)}}
+.logo-fallback-text{display:flex;align-items:center;justify-content:center;
+  width:100%;height:100%;background:linear-gradient(135deg,#ec4899,#fbbf24);
+  color:#fff;font-size:42px;font-weight:900;text-shadow:0 2px 10px rgba(0,0,0,.3)}
+.splash-title{font-size:clamp(46px,14vw,72px);font-weight:900;margin:20px 0 4px;z-index:1;
+  background:linear-gradient(135deg,#fbbf24,#ec4899 45%,#10b981);
+  background-size:200% 200%;-webkit-background-clip:text;background-clip:text;color:transparent;
+  letter-spacing:2px;position:relative;filter:drop-shadow(0 4px 24px rgba(251,191,36,.5));
+  animation:titleIn 1s cubic-bezier(.2,1.2,.4,1) .3s both,gradShift 5s ease infinite 1.3s}
+@keyframes titleIn{from{transform:translateY(30px);letter-spacing:24px;opacity:0;filter:blur(10px)}
+  to{transform:none;letter-spacing:2px;opacity:1;filter:blur(0)}}
+@keyframes gradShift{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+.splash-tagline{color:var(--gold);font-size:14px;letter-spacing:1px;margin-bottom:26px;
+  position:relative;z-index:1;font-weight:700;text-shadow:0 0 20px rgba(251,191,36,.5)}
+.splash-step{display:none;width:100%;max-width:380px;position:relative;z-index:1;
+  animation:fadeSlide .5s ease both}
+.splash-step.active{display:block}
+.step-title{font-size:17px;font-weight:900;margin-bottom:14px;color:var(--gold);
+  display:flex;align-items:center;justify-content:center;gap:8px}
+.name-input{width:100%;padding:15px 18px;background:rgba(15,23,42,.7);
+  border:2px solid var(--border);border-radius:16px;color:var(--text);
+  font-family:inherit;font-size:16px;font-weight:700;text-align:center;
+  transition:.2s;outline:none;backdrop-filter:blur(10px)}
+.name-input:focus{border-color:var(--gold);box-shadow:0 0 0 4px rgba(251,191,36,.15)}
+.age-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:8px}
+.age-grid .age-btn:last-child:nth-child(odd){grid-column:1/-1}
+.age-btn{background:rgba(15,23,42,.7);border:2px solid var(--border);border-radius:16px;
+  padding:14px 10px;cursor:pointer;font-family:inherit;color:var(--text);
+  transition:.22s;text-align:center;position:relative;overflow:hidden;backdrop-filter:blur(10px)}
+.age-btn:hover,.age-btn.selected{border-color:var(--gold);transform:translateY(-3px);
+  box-shadow:0 12px 30px -8px var(--gold)}
+.age-btn .ico{font-size:26px;display:block;margin-bottom:6px;color:var(--gold)}
+.age-btn .ttl{font-size:14px;font-weight:800}
+.age-btn .sub{font-size:11px;color:var(--dim);margin-top:2px}
+.avatar-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:8px}
+.avatar-opt{aspect-ratio:1;border-radius:18px;overflow:hidden;cursor:pointer;
+  border:3px solid var(--border);background:var(--surface);transition:.22s;
+  position:relative;display:flex;align-items:center;justify-content:center}
+.avatar-opt img{width:100%;height:100%;object-fit:cover;transition:.3s}
+.avatar-opt:hover{border-color:var(--gold-2);transform:translateY(-3px) scale(1.03);
+  box-shadow:0 12px 30px -8px var(--gold)}
+.avatar-opt.selected{border-color:var(--gold);box-shadow:0 0 0 3px rgba(251,191,36,.3)}
+.avatar-opt.selected::after{content:"\f00c";font-family:"Font Awesome 6 Free";font-weight:900;
+  position:absolute;top:6px;left:6px;width:26px;height:26px;border-radius:50%;
+  background:var(--gold);color:var(--navy);display:grid;place-items:center;font-size:12px}
+.avatar-fallback{width:100%;height:100%;display:flex;align-items:center;justify-content:center;
+  font-size:44px;color:#fff}
+.step-btn{padding:15px 38px;font-size:16px;font-weight:900;font-family:inherit;
+  border:0;border-radius:16px;background:linear-gradient(135deg,var(--gold),var(--pink));
+  color:var(--navy);cursor:pointer;transition:.25s;margin-top:14px;width:100%;
+  display:inline-flex;align-items:center;justify-content:center;gap:10px;
+  box-shadow:0 12px 40px -8px var(--gold);position:relative;overflow:hidden}
+.step-btn:hover{transform:translateY(-2px) scale(1.01)}
+.step-btn:active{transform:scale(.97)}
+.step-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.step-nav{display:flex;gap:10px;justify-content:space-between;align-items:center;
+  margin-top:10px;width:100%}
+.step-nav .back-link{color:var(--dim);font-size:12px;cursor:pointer;
+  background:none;border:0;font-family:inherit;padding:8px;transition:.2s}
+.step-nav .back-link:hover{color:var(--gold)}
+.save-notice{font-size:11px;color:var(--dim);margin-top:16px;
+  background:rgba(15,23,42,.6);border:1px dashed var(--border);border-radius:10px;
+  padding:10px 12px;display:flex;align-items:flex-start;gap:8px;text-align:right;
+  position:relative;z-index:1;max-width:380px}
+.save-notice i{color:var(--gold);font-size:14px;flex-shrink:0;margin-top:2px}
+.splash-dev{margin-top:20px;font-size:12px;color:var(--dim);position:relative;z-index:1}
+.splash-dev b{color:var(--pink);font-weight:900}
+.splash-dev .heart{color:#ec4899;display:inline-block;animation:heart 1.2s ease-in-out infinite;margin:0 3px}
+@keyframes heart{0%,100%{transform:scale(1)}30%{transform:scale(1.3)}60%{transform:scale(1)}}
+
+/* TOPBAR */
+.topbar{display:flex;align-items:center;gap:8px;margin-bottom:14px;
+  background:rgba(15,23,42,.7);border:1px solid var(--border);border-radius:16px;
+  padding:10px 12px;backdrop-filter:blur(14px);box-shadow:0 8px 24px rgba(0,0,0,.3)}
+.player-box{display:flex;align-items:center;gap:10px;flex:1;min-width:0}
+.player-avatar{width:42px;height:42px;border-radius:50%;overflow:hidden;
+  border:2px solid var(--gold);flex-shrink:0;display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(135deg,#ec4899,#fbbf24);color:#fff;font-size:18px;font-weight:900}
+.player-avatar img{width:100%;height:100%;object-fit:cover}
+.player-info{flex:1;min-width:0}
+.player-name{font-size:14px;font-weight:900;color:var(--text);
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.player-meta{font-size:11px;color:var(--dim);display:flex;align-items:center;gap:6px}
+.player-meta i{color:var(--pink);font-size:10px}
+.player-meta .tag{background:rgba(251,191,36,.15);color:var(--gold);
+  padding:1px 7px;border-radius:99px;font-weight:700}
+.icon-btn{width:40px;height:40px;flex:0 0 40px;border-radius:12px;
+  border:1px solid var(--border);background:rgba(15,23,42,.6);color:var(--text);
+  font-size:15px;cursor:pointer;display:grid;place-items:center;transition:.18s;font-family:inherit}
+.icon-btn:hover{background:var(--surface-2);color:var(--gold);border-color:var(--gold);transform:scale(1.05)}
+.icon-btn:active{transform:scale(.94)}
+.icon-btn.muted{color:#ef4444}
+
+/* TABBAR */
+.tabbar{position:fixed;bottom:0;left:0;right:0;z-index:100;
+  background:linear-gradient(to top,rgba(2,6,23,.98),rgba(15,23,42,.92));
+  border-top:1px solid var(--border);backdrop-filter:blur(20px);
+  display:flex;justify-content:space-around;align-items:center;
+  padding:8px 4px calc(8px + var(--safe-b));box-shadow:0 -10px 40px rgba(0,0,0,.5);
+  transition:transform .3s}
+.tabbar.hidden{transform:translateY(120%)}
+.tab-btn{flex:1;background:none;border:0;color:var(--dim);cursor:pointer;
+  font-family:inherit;padding:6px 2px;display:flex;flex-direction:column;
+  align-items:center;gap:3px;transition:.2s;position:relative;border-radius:10px}
+.tab-btn i{font-size:18px}
+.tab-btn span{font-size:10px;font-weight:800}
+.tab-btn.active{color:var(--gold)}
+.tab-btn.active i{transform:scale(1.15);filter:drop-shadow(0 0 10px var(--gold))}
+.tab-btn.active::before{content:"";position:absolute;top:-8px;left:20%;right:20%;height:3px;
+  background:var(--gold);border-radius:99px;box-shadow:0 0 12px var(--gold)}
+
+/* HOME */
+.home-hero{position:relative;border-radius:22px;overflow:hidden;margin-bottom:16px;
+  border:1px solid var(--border);background:rgba(15,23,42,.6);
+  backdrop-filter:blur(14px);padding:20px 16px;text-align:center;
+  box-shadow:0 12px 40px rgba(0,0,0,.4)}
+.home-hero::before{content:"";position:absolute;inset:0;z-index:0;
+  background:radial-gradient(circle at 50% 0%,rgba(251,191,36,.2),transparent 60%),
+    radial-gradient(circle at 0% 100%,rgba(236,72,153,.15),transparent 50%),
+    radial-gradient(circle at 100% 100%,rgba(16,185,129,.15),transparent 50%)}
+.home-hero>*{position:relative;z-index:1}
+.home-logo{width:90px;height:90px;border-radius:22px;margin:0 auto 10px;
+  border:2px solid var(--gold);overflow:hidden;animation:floatY 3s ease-in-out infinite;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 0 30px rgba(251,191,36,.5)}
+.home-logo img{width:100%;height:100%;object-fit:cover}
+@keyframes floatY{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.home-title{font-size:32px;font-weight:900;letter-spacing:1px;
+  background:linear-gradient(135deg,#fbbf24,#ec4899 50%,#10b981);
+  background-size:200% 200%;-webkit-background-clip:text;background-clip:text;color:transparent;
+  animation:gradShift 5s ease infinite;margin-bottom:4px}
+.home-sub{font-size:12.5px;color:var(--dim)}
+.home-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:14px}
+.hs{background:rgba(2,6,23,.5);border:1px solid var(--border);border-radius:12px;
+  padding:8px 4px;text-align:center;transition:.2s}
+.hs:hover{transform:translateY(-2px);border-color:var(--gold-2)}
+.hs i{font-size:14px;display:block;margin-bottom:3px;color:var(--gold)}
+.hs b{font-size:14px;font-weight:900;display:block;color:var(--text)}
+.hs small{font-size:9px;color:var(--dim)}
+.attempts-box{background:linear-gradient(135deg,rgba(236,72,153,.15),rgba(251,191,36,.1));
+  border:1px solid var(--border);border-radius:14px;padding:10px 14px;
+  margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.attempts-box i{color:var(--pink);font-size:18px}
+.attempts-box .info{flex:1}
+.attempts-box .lbl{font-size:11px;color:var(--dim)}
+.attempts-box .val{font-size:15px;font-weight:900;color:var(--gold);letter-spacing:1px}
+.attempts-box .val small{color:var(--dim);font-weight:700;font-size:11px}
+.sect-title{font-size:16px;font-weight:900;color:var(--text);margin:18px 4px 12px;
+  display:flex;align-items:center;gap:8px}
+.sect-title i{color:var(--gold);font-size:15px}
+.sect-title::after{content:"";flex:1;height:1px;
+  background:linear-gradient(to left,var(--border),transparent)}
+
+/* CAT CARDS */
+.cats-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:11px}
+.cat-card{position:relative;background:rgba(15,23,42,.65);border:1px solid var(--border);
+  border-radius:18px;padding:16px 12px;cursor:pointer;transition:.25s;
+  text-align:center;font-family:inherit;color:var(--text);overflow:hidden}
+.cat-card::before{content:"";position:absolute;inset:0;opacity:0;transition:.3s;
+  background:radial-gradient(circle at top,color-mix(in srgb,var(--c) 30%,transparent),transparent 70%)}
+.cat-card:hover::before{opacity:1}
+.cat-card:hover{transform:translateY(-3px);box-shadow:0 16px 40px -10px var(--c)}
+.cat-card>*{position:relative;z-index:1}
+.cat-icon{font-size:30px;line-height:1;margin-bottom:6px;display:block;color:var(--c);
+  filter:drop-shadow(0 0 12px var(--c));transition:.2s}
+.cat-card:hover .cat-icon{transform:scale(1.12) rotate(-4deg)}
+.cat-name{font-size:14px;font-weight:900}
+.cat-sub{font-size:11px;color:var(--dim);margin-top:3px}
+.cat-prog{margin-top:8px;height:4px;border-radius:99px;background:rgba(255,255,255,.08);
+  overflow:hidden}
+.cat-prog i{display:block;height:100%;background:var(--c);border-radius:99px;transition:width .5s}
+
+/* MODE CARDS */
+.mode-grid{display:grid;gap:11px}
+.mode-card{position:relative;border-radius:20px;padding:16px 14px;cursor:pointer;
+  font-family:inherit;color:var(--text);border:1px solid var(--border);
+  background:linear-gradient(135deg,rgba(15,23,42,.85),rgba(30,41,59,.7));
+  text-align:right;overflow:hidden;transition:.25s;display:flex;
+  align-items:center;gap:12px}
+.mode-card::before{content:"";position:absolute;inset:0;opacity:.35;
+  background:radial-gradient(circle at 0% 50%,var(--c),transparent 60%)}
+.mode-card:hover{transform:translateY(-3px);box-shadow:0 16px 40px -10px var(--c);
+  border-color:var(--c)}
+.mode-card>*{position:relative;z-index:1}
+.mode-icon{width:52px;height:52px;flex:0 0 52px;border-radius:14px;
+  background:linear-gradient(135deg,var(--c),color-mix(in srgb,var(--c) 50%,#000));
+  display:grid;place-items:center;font-size:22px;color:#fff;
+  box-shadow:0 8px 24px -6px var(--c)}
+.mode-card:hover .mode-icon{transform:scale(1.08) rotate(-5deg)}
+.mode-info{flex:1;min-width:0}
+.mode-title{font-size:15px;font-weight:900;margin-bottom:3px}
+.mode-desc{font-size:11.5px;color:var(--dim);line-height:1.4}
+.mode-arrow{color:var(--dim);font-size:14px;flex-shrink:0}
+.mode-card:hover .mode-arrow{color:var(--c);transform:translateX(-4px)}
+
+/* PAGE HEAD */
+.page-head{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.page-head h2{font-size:18px;font-weight:900;flex:1;text-align:center;
+  color:var(--gold);text-shadow:0 0 20px rgba(251,191,36,.4)}
+.back-btn{width:42px;height:42px;flex:0 0 42px;border-radius:12px;
+  border:1px solid var(--border);background:rgba(15,23,42,.65);color:var(--text);
+  font-size:16px;cursor:pointer;display:grid;place-items:center;transition:.2s;font-family:inherit}
+.back-btn:hover{background:var(--surface-2);color:var(--gold);border-color:var(--gold)}
+
+/* LEVELS */
+.levels-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.level-card{position:relative;background:rgba(15,23,42,.7);border:1px solid var(--border);
+  border-radius:16px;padding:12px 8px;cursor:pointer;transition:.22s;text-align:center}
+.level-card:hover:not(.locked){transform:translateY(-3px);border-color:var(--gold);
+  box-shadow:0 12px 30px -8px var(--gold)}
+.level-num{width:42px;height:42px;margin:0 auto 6px;border-radius:12px;
+  display:grid;place-items:center;font-size:16px;font-weight:900;color:var(--navy);
+  background:linear-gradient(135deg,var(--gold),var(--gold-2));
+  box-shadow:0 6px 18px -4px var(--gold)}
+.level-num.locked{background:rgba(255,255,255,.1);color:var(--dim);box-shadow:none}
+.level-title{font-size:12px;font-weight:800;margin-bottom:2px}
+.level-diff{font-size:10px;color:var(--dim)}
+.level-best{margin-top:5px;font-size:10.5px;color:var(--gold);font-weight:900}
+.level-card.locked{opacity:.45;cursor:not-allowed;filter:grayscale(.7)}
+.level-stars{position:absolute;top:4px;left:4px;font-size:9px;color:var(--gold);display:flex;gap:1px}
+
+/* QUIZ */
+.q-play-wrap{position:relative;background:rgba(15,23,42,.8);
+  border:1px solid var(--border-2);border-radius:22px;padding:20px 16px;
+  box-shadow:0 22px 60px rgba(0,0,0,.5);background-image:
+    linear-gradient(135deg,rgba(15,23,42,.92),rgba(30,41,59,.85)),
+    url('https://famo-pic.gt.tc/view.php?key=79754c1b5a19df5849b63ea1352a575dd1d57b3a348f26d5');
+  background-size:cover;background-position:center}
+.q-top{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.q-prog{flex:1;height:7px;border-radius:99px;background:rgba(255,255,255,.08);overflow:hidden}
+.q-prog i{display:block;height:100%;width:0;background:linear-gradient(to left,var(--gold),var(--pink));
+  border-radius:99px;transition:width .35s;box-shadow:0 0 12px var(--gold)}
+.q-count{font-size:12px;color:var(--dim);font-weight:800;min-width:52px;text-align:left;direction:ltr}
+.q-count b{color:var(--gold);font-size:15px}
+.q-meta{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;align-items:center}
+.q-chip{font-size:11px;font-weight:800;padding:4px 10px;border-radius:99px;
+  background:rgba(2,6,23,.7);border:1px solid var(--border);
+  display:inline-flex;align-items:center;gap:5px}
+.q-chip i{font-size:10px}
+.q-chip.cat{border-color:var(--gold)}
+.hearts{display:flex;gap:3px;font-size:15px;margin-right:auto}
+.heart{color:#ef4444;opacity:.25;transition:.3s}
+.heart.on{opacity:1;filter:drop-shadow(0 0 8px #ef4444)}
+.heart.lose{animation:heartBreak .55s ease forwards}
+@keyframes heartBreak{to{transform:scale(1.8) rotate(15deg);opacity:0}}
+.q-score{font-size:12px;font-weight:900;color:var(--gold);
+  background:rgba(251,191,36,.15);padding:4px 10px;border-radius:99px;
+  border:1px solid var(--gold-2);display:inline-flex;align-items:center;gap:4px}
+.q-timer{position:relative;height:6px;border-radius:99px;
+  background:rgba(255,255,255,.08);margin-bottom:20px}
+.q-timer i{display:block;height:100%;width:100%;background:var(--green);
+  border-radius:99px;transition:background .3s}
+.q-timer b{position:absolute;top:-12px;left:-2px;font-size:11px;font-weight:900;
+  background:rgba(2,6,23,.9);border:1px solid var(--border);border-radius:99px;
+  padding:1px 8px;min-width:32px;text-align:center;direction:ltr;color:var(--gold);
+  display:inline-flex;align-items:center;gap:3px}
+.q-timer b i{font-size:9px}
+.q-text{font-size:clamp(16px,4.5vw,19px);font-weight:800;line-height:1.6;
+  margin-bottom:16px;min-height:60px;color:var(--text)}
+.q-speak{background:rgba(251,191,36,.15);border:1px solid var(--gold-2);
+  color:var(--gold);width:34px;height:34px;border-radius:50%;
+  display:inline-grid;place-items:center;cursor:pointer;font-size:13px;
+  margin-right:6px;transition:.2s;font-family:inherit;vertical-align:middle}
+.q-speak:hover{background:var(--gold);color:var(--navy)}
+.q-opts{display:grid;gap:8px}
+.q-opt{display:flex;align-items:center;gap:10px;padding:13px 14px;min-height:52px;
+  border-radius:13px;background:rgba(2,6,23,.6);border:1px solid var(--border);
+  cursor:pointer;transition:.15s;font-size:14.5px;font-weight:700;
+  text-align:right;color:var(--text);font-family:inherit;width:100%;line-height:1.4}
+.q-opt:hover:not(.dis){background:rgba(251,191,36,.12);border-color:var(--gold);transform:translateX(-3px)}
+.q-opt .ltr{width:28px;height:28px;flex:0 0 28px;border-radius:8px;
+  display:grid;place-items:center;background:rgba(251,191,36,.15);
+  font-weight:900;font-size:12px;color:var(--gold)}
+.q-opt.ok{background:rgba(16,185,129,.22);border-color:var(--green);
+  animation:pop .35s ease;box-shadow:0 0 20px rgba(16,185,129,.4)}
+.q-opt.ok .ltr{background:var(--green);color:#fff}
+.q-opt.no{background:rgba(239,68,68,.18);border-color:#ef4444;animation:shake .4s ease}
+.q-opt.no .ltr{background:#ef4444;color:#fff}
+.q-opt.dis{cursor:default}
+.q-opt.gone{opacity:.15;pointer-events:none;filter:blur(2px)}
+@keyframes pop{from{transform:scale(.92)}to{transform:scale(1)}}
+@keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
+.powerups{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px}
+.pu{background:rgba(2,6,23,.7);border:1px solid var(--border);border-radius:12px;
+  padding:10px 6px;cursor:pointer;font-family:inherit;color:var(--text);
+  font-size:11px;font-weight:800;transition:.18s;
+  display:flex;flex-direction:column;align-items:center;gap:3px}
+.pu:hover:not(:disabled){background:rgba(251,191,36,.15);border-color:var(--gold);transform:translateY(-2px)}
+.pu:disabled{opacity:.3;cursor:not-allowed}
+.pu .ico{font-size:16px;color:var(--gold)}
+
+/* RESULT */
+.result-card{background:rgba(15,23,42,.85);border:1px solid var(--border-2);
+  border-radius:22px;padding:22px 18px;box-shadow:0 22px 60px rgba(0,0,0,.5);
+  text-align:center;background-image:
+    linear-gradient(135deg,rgba(15,23,42,.92),rgba(30,41,59,.85)),
+    url('https://famo-pic.gt.tc/view.php?key=13ac3431b950b48427e27d60bd9c69c1cbcc4a21e7a58779');
+  background-size:cover;background-position:center}
+.result-stars{font-size:34px;margin-bottom:10px;display:flex;justify-content:center;gap:6px}
+.result-stars i{animation:starPop .55s cubic-bezier(.2,1.4,.4,1) backwards;
+  filter:drop-shadow(0 0 12px var(--gold))}
+@keyframes starPop{from{transform:scale(0) rotate(-180deg);opacity:0}to{transform:none;opacity:1}}
+.result-title{font-size:22px;font-weight:900;margin-bottom:4px;color:var(--gold)}
+.result-score{font-size:56px;font-weight:900;line-height:1;
+  background:linear-gradient(135deg,var(--gold),var(--pink));
+  -webkit-background-clip:text;background-clip:text;color:transparent;margin-top:6px}
+.result-lbl{color:var(--dim);font-size:12px;margin-bottom:16px;font-weight:700}
+.result-stats{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:16px}
+.result-stats>div{background:rgba(2,6,23,.6);border:1px solid var(--border);
+  border-radius:12px;padding:10px 6px;text-align:center}
+.result-stats i{font-size:14px;color:var(--gold);margin-bottom:2px;display:block}
+.result-stats b{display:block;font-size:16px;font-weight:900;color:var(--text)}
+.result-stats span{font-size:10px;color:var(--dim)}
+.result-actions{display:grid;gap:9px}
+
+/* BUTTONS */
+.btn{border:0;border-radius:14px;padding:13px 22px;font-size:14.5px;font-weight:900;
+  font-family:inherit;cursor:pointer;transition:.2s;width:100%;color:var(--navy);
+  line-height:1.4;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.btn.primary{background:linear-gradient(135deg,var(--gold),var(--pink));
+  box-shadow:0 12px 30px -8px var(--gold)}
+.btn.primary:hover{transform:translateY(-2px)}
+.btn.ghost{background:rgba(2,6,23,.6);color:var(--text);border:1px solid var(--border)}
+.btn.ghost:hover{background:var(--surface-2);border-color:var(--gold);color:var(--gold)}
+.btn.danger{background:rgba(239,68,68,.15);color:#ef4444;border:1px solid rgba(239,68,68,.4)}
+.btn:active{transform:scale(.97)}
+
+/* SETTINGS */
+.setting-item{background:rgba(15,23,42,.65);border:1px solid var(--border);
+  border-radius:14px;padding:14px 16px;margin-bottom:10px;
+  display:flex;align-items:center;gap:12px;transition:.2s}
+.setting-item:hover{border-color:var(--gold-2)}
+.setting-icon{width:40px;height:40px;flex:0 0 40px;border-radius:12px;
+  background:linear-gradient(135deg,rgba(236,72,153,.2),rgba(251,191,36,.15));
+  display:grid;place-items:center;color:var(--gold);font-size:16px;
+  border:1px solid var(--border)}
+.setting-info{flex:1;min-width:0}
+.setting-label{font-size:13.5px;font-weight:800;margin-bottom:2px}
+.setting-desc{font-size:11px;color:var(--dim)}
+.toggle{position:relative;width:46px;height:26px;background:rgba(2,6,23,.8);
+  border:1px solid var(--border);border-radius:99px;cursor:pointer;
+  transition:.3s;flex-shrink:0}
+.toggle::before{content:"";position:absolute;top:2px;right:2px;width:18px;height:18px;
+  background:var(--dim);border-radius:50%;transition:.3s}
+.toggle.on{background:rgba(16,185,129,.3);border-color:var(--green)}
+.toggle.on::before{background:var(--green);transform:translateX(-20px);box-shadow:0 0 12px var(--green)}
+
+/* LOCKOUT */
+.lockout{position:fixed;inset:0;background:rgba(2,6,23,.95);backdrop-filter:blur(20px);
+  z-index:9999;display:none;align-items:center;justify-content:center;padding:20px}
+.lockout.active{display:flex}
+.lockout-box{background:linear-gradient(135deg,rgba(15,23,42,.98),rgba(30,41,59,.95));
+  border:2px solid #ef4444;border-radius:22px;padding:28px 22px;text-align:center;
+  max-width:380px;width:100%;box-shadow:0 0 60px rgba(239,68,68,.4)}
+.lockout-icon{font-size:52px;color:#ef4444;margin-bottom:14px;
+  animation:shake 2s ease-in-out infinite}
+.lockout-title{font-size:20px;font-weight:900;margin-bottom:8px;color:#ef4444}
+.lockout-desc{font-size:13px;color:var(--dim);line-height:1.6;margin-bottom:16px}
+.lockout-timer{font-size:40px;font-weight:900;color:var(--gold);
+  direction:ltr;font-family:"Courier New",monospace;
+  text-shadow:0 0 24px var(--gold);margin-bottom:16px;letter-spacing:2px}
+
+/* CONFETTI */
+.confetti{position:fixed;top:-30px;pointer-events:none;z-index:9999;
+  animation:fall 2.8s linear forwards}
+@keyframes fall{to{transform:translateY(110dvh) rotate(720deg);opacity:0}}
+
+/* MODAL */
+.modal-bg{position:fixed;inset:0;background:rgba(2,6,23,.85);backdrop-filter:blur(12px);
+  z-index:9998;display:none;align-items:center;justify-content:center;padding:20px}
+.modal-bg.active{display:flex}
+.modal-box{background:linear-gradient(135deg,rgba(15,23,42,.98),rgba(30,41,59,.95));
+  border:1px solid var(--border-2);border-radius:20px;padding:22px;
+  max-width:400px;width:100%;text-align:center}
+.modal-box h3{font-size:17px;font-weight:900;color:var(--gold);margin-bottom:10px}
+.modal-box p{font-size:13px;color:var(--dim);margin-bottom:16px;line-height:1.6}
+.modal-actions{display:flex;gap:8px}
+
+@media(min-width:480px){
+  .cat-card{padding:20px 14px}.cat-icon{font-size:34px}
+  .levels-grid{grid-template-columns:repeat(4,1fr)}
+  .home-title{font-size:38px}
+}
+@media(min-width:640px){
+  .cats-grid{grid-template-columns:repeat(3,1fr)}
+  .levels-grid{grid-template-columns:repeat(5,1fr)}
+  .result-stats{grid-template-columns:repeat(4,1fr)}
+  .mode-grid{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+
+<div class="app">
+
+<!-- SPLASH -->
+<section class="screen active no-tab" id="scr-splash">
+  <div class="splash-bg"></div>
+  <div class="app-inner">
+    <div class="splash-logo" id="splashLogo">
+      <img src="https://famo-pic.gt.tc/view.php?key=04a44e93e9d59fbeab17f0239da822c369564fdb86f3ace3" 
+           alt="جمجم" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+      <div class="logo-fallback-text" style="display:none">جمجم</div>
+    </div>
+    <h1 class="splash-title">جمجم</h1>
+    <p class="splash-tagline">✦ عالم الأذكياء ✦</p>
+
+    <div class="splash-step active" id="step-name" data-step="1">
+      <div class="step-title"><i class="fas fa-user-astronaut"></i> ما اسمك يا بطل؟</div>
+      <input type="text" class="name-input" id="inpName" placeholder="اكتب اسمك هنا..." maxlength="20" autocomplete="off">
+      <button class="step-btn" id="btnStepName" disabled>
+        <span>التالي</span><i class="fas fa-arrow-left"></i>
+      </button>
+    </div>
+
+    <div class="splash-step" id="step-age" data-step="2">
+      <div class="step-title"><i class="fas fa-cake-candles"></i> كم عمرك؟</div>
+      <div class="age-grid" id="ageGrid">
+        <button class="age-btn" data-age="3-5"><span class="ico"><i class="fas fa-baby"></i></span><div class="ttl">3 - 5 سنين</div><div class="sub">طفولة مبكرة</div></button>
+        <button class="age-btn" data-age="6-8"><span class="ico"><i class="fas fa-child"></i></span><div class="ttl">6 - 8 سنين</div><div class="sub">طفولة متوسطة</div></button>
+        <button class="age-btn" data-age="9-12"><span class="ico"><i class="fas fa-child-reaching"></i></span><div class="ttl">9 - 12 سنة</div><div class="sub">طفولة متأخرة</div></button>
+        <button class="age-btn" data-age="13-18"><span class="ico"><i class="fas fa-user-graduate"></i></span><div class="ttl">13 - 18 سنة</div><div class="sub">مراهقون</div></button>
+        <button class="age-btn" data-age="19+"><span class="ico"><i class="fas fa-user-tie"></i></span><div class="ttl">19+ سنة</div><div class="sub">كبار</div></button>
+      </div>
+      <div class="step-nav">
+        <button class="back-link" data-back-step="1"><i class="fas fa-arrow-right"></i> رجوع</button>
+        <button class="step-btn" id="btnStepAge" style="width:auto" disabled><span>التالي</span><i class="fas fa-arrow-left"></i></button>
+      </div>
+    </div>
+
+    <div class="splash-step" id="step-avatar" data-step="3">
+      <div class="step-title"><i class="fas fa-image-portrait"></i> اختر صورتك</div>
+      <div class="avatar-grid" id="avatarGrid"></div>
+      <div class="step-nav">
+        <button class="back-link" data-back-step="2"><i class="fas fa-arrow-right"></i> رجوع</button>
+        <button class="step-btn" id="btnStepAvatar" style="width:auto" disabled><span>ابدأ الرحلة</span><i class="fas fa-rocket"></i></button>
+      </div>
+    </div>
+
+    <div class="save-notice">
+      <i class="fas fa-info-circle"></i>
+      <span>⚠️ الحفظ محلي على جهازك فقط — في حالة مسح الكاش أو تغيير الهاتف ستفقد تقدمك.</span>
+    </div>
+
+    <p class="splash-dev">صُنع بـ <span class="heart"><i class="fas fa-heart"></i></span> بواسطة <b>Famo</b></p>
+  </div>
+</section>
+
+<!-- HOME -->
+<section class="screen" id="scr-home">
+  <div class="topbar">
+    <div class="player-box">
+      <div class="player-avatar" id="tbAvatarWrap"><img id="tbAvatar" alt="avatar"></div>
+      <div class="player-info">
+        <div class="player-name" id="tbName">بطل</div>
+        <div class="player-meta">
+          <span class="tag" id="tbAge">3-5</span>
+          <i class="fas fa-fire"></i><span id="tbStreak">0</span>
+        </div>
+      </div>
+    </div>
+    <button class="icon-btn" id="btnVoice" title="كتم الكل"><i class="fas fa-volume-high"></i></button>
+    <button class="icon-btn" id="btnBgmToggle" title="الموسيقى"><i class="fas fa-music"></i></button>
+    <button class="icon-btn" id="btnSettings" title="الإعدادات"><i class="fas fa-gear"></i></button>
+  </div>
+
+  <div class="home-hero">
+    <div class="home-logo">
+      <img src="https://famo-pic.gt.tc/view.php?key=04a44e93e9d59fbeab17f0239da822c369564fdb86f3ace3" 
+           alt="جمجم" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+      <div class="logo-fallback-text" style="display:none;font-size:36px">جمجم</div>
+    </div>
+    <div class="home-title">جمجم</div>
+    <div class="home-sub">عالم الأذكياء · تحدى نفسك</div>
+    <div class="home-stats">
+      <div class="hs"><i class="fas fa-star"></i><b id="statStars">0</b><small>نجوم</small></div>
+      <div class="hs"><i class="fas fa-fire"></i><b id="statStreak">0</b><small>سلسلة</small></div>
+      <div class="hs"><i class="fas fa-gamepad"></i><b id="statGames">0</b><small>جولات</small></div>
+      <div class="hs"><i class="fas fa-trophy"></i><b id="statLevels">0</b><small>مراحل</small></div>
+    </div>
+  </div>
+
+  <div class="attempts-box" id="attemptsBox">
+    <i class="fas fa-heart-circle-check"></i>
+    <div class="info">
+      <div class="lbl">المحاولات المتاحة</div>
+      <div class="val"><span id="attCount">3</span> <small>/ 5</small></div>
+    </div>
+    <i class="fas fa-hourglass-half" id="attTimerIcon" style="font-size:14px;color:var(--dim)"></i>
+    <span id="attTimer" style="font-size:12px;color:var(--dim);direction:ltr;font-weight:800"></span>
+  </div>
+
+  <h2 class="sect-title"><i class="fas fa-gamepad"></i> الألعاب المتاحة</h2>
+  <div class="mode-grid" id="gamesGrid"></div>
+</section>
+
+<!-- HUB -->
+<section class="screen" id="scr-hub">
+  <div class="page-head">
+    <button class="back-btn" data-back="home"><i class="fas fa-arrow-right"></i></button>
+    <h2 id="hubTitle">الاختبار</h2>
+    <span style="width:42px"></span>
+  </div>
+  <div id="hubContent"></div>
+</section>
+
+<!-- LEVELS -->
+<section class="screen" id="scr-levels">
+  <div class="page-head">
+    <button class="back-btn" data-back="hub"><i class="fas fa-arrow-right"></i></button>
+    <h2 id="levelsTitle">المراحل</h2>
+    <span style="width:42px"></span>
+  </div>
+  <div class="levels-grid" id="levelsGrid"></div>
+</section>
+
+<!-- QUIZ -->
+<section class="screen no-tab" id="scr-quiz">
+  <div class="q-play-wrap">
+    <div class="q-top">
+      <button class="icon-btn" data-quit-quiz><i class="fas fa-xmark"></i></button>
+      <div class="q-prog"><i id="qProg"></i></div>
+      <span class="q-count"><b id="qNum">1</b>/<span id="qTot">20</span></span>
+    </div>
+    <div class="q-meta">
+      <span class="q-chip cat" id="qCat"><i class="fas fa-calculator"></i><span>رياضيات</span></span>
+      <span class="hearts" id="qHearts"></span>
+      <span class="q-score" id="qScore"><i class="fas fa-star"></i><span>0</span></span>
+    </div>
+    <div class="q-timer">
+      <i id="qTimerFill"></i>
+      <b><i class="fas fa-clock"></i><span id="qTimerNum">30</span></b>
+    </div>
+    <div class="q-text">
+      <span id="qText"></span>
+      <button class="q-speak" id="btnSpeakQ" title="اقرأ السؤال"><i class="fas fa-volume-high"></i></button>
+    </div>
+    <div class="q-opts" id="qOpts"></div>
+    <div class="powerups">
+      <button class="pu" data-pu="fifty"><span class="ico"><i class="fas fa-bolt"></i></span>50/50</button>
+      <button class="pu" data-pu="freeze"><span class="ico"><i class="fas fa-snowflake"></i></span>تجميد</button>
+      <button class="pu" data-pu="skip"><span class="ico"><i class="fas fa-forward"></i></span>تخطي</button>
+    </div>
+  </div>
+</section>
+
+<!-- RESULT -->
+<section class="screen no-tab" id="scr-result">
+  <div class="result-card">
+    <div class="result-stars" id="resStars"></div>
+    <h2 class="result-title" id="resTitle">أحسنت!</h2>
+    <div class="result-score" id="resScore">0</div>
+    <p class="result-lbl">نقطة</p>
+    <div class="result-stats">
+      <div><i class="fas fa-check-circle"></i><b id="resCorrect">0</b><span>صحيحة</span></div>
+      <div><i class="fas fa-bullseye"></i><b id="resAcc">0%</b><span>الدقة</span></div>
+      <div><i class="fas fa-fire"></i><b id="resStreak">0</b><span>سلسلة</span></div>
+      <div><i class="fas fa-clock"></i><b id="resTime">0</b><span>ثانية</span></div>
+    </div>
+    <div class="result-actions">
+      <button class="btn primary" id="btnNextLevel"><i class="fas fa-arrow-left"></i> المرحلة التالية</button>
+      <button class="btn ghost" id="btnRetry"><i class="fas fa-rotate-right"></i> إعادة المحاولة</button>
+      <button class="btn ghost" id="btnBackHome"><i class="fas fa-house"></i> الرئيسية</button>
+    </div>
+  </div>
+</section>
+
+<!-- SETTINGS -->
+<section class="screen" id="scr-settings">
+  <div class="page-head">
+    <button class="back-btn" data-back="home"><i class="fas fa-arrow-right"></i></button>
+    <h2>الإعدادات</h2>
+    <span style="width:42px"></span>
+  </div>
+
+  <div class="setting-item">
+    <div class="setting-icon"><i class="fas fa-user-astronaut"></i></div>
+    <div class="setting-info">
+      <div class="setting-label">الاسم</div>
+      <div class="setting-desc" id="setName">بطل</div>
+    </div>
+    <button class="btn ghost" style="width:auto;padding:8px 14px;font-size:12px" id="btnEditName">تعديل</button>
+  </div>
+
+  <div class="setting-item">
+    <div class="setting-icon"><i class="fas fa-cake-candles"></i></div>
+    <div class="setting-info">
+      <div class="setting-label">العمر</div>
+      <div class="setting-desc" id="setAge">3-5</div>
+    </div>
+    <button class="btn ghost" style="width:auto;padding:8px 14px;font-size:12px" id="btnEditAge">تعديل</button>
+  </div>
+
+  <div class="setting-item">
+    <div class="setting-icon"><i class="fas fa-volume-high"></i></div>
+    <div class="setting-info">
+      <div class="setting-label">الأصوات</div>
+      <div class="setting-desc">مؤثرات صوتية + موسيقى</div>
+    </div>
+    <div class="toggle on" id="togSound"></div>
+  </div>
+
+  <div class="setting-item">
+    <div class="setting-icon"><i class="fas fa-music"></i></div>
+    <div class="setting-info">
+      <div class="setting-label">الموسيقى الخلفية</div>
+      <div class="setting-desc">موسيقى هادئة أثناء اللعب</div>
+    </div>
+    <div class="toggle on" id="togMusic"></div>
+  </div>
+
+  <div class="setting-item">
+    <div class="setting-icon"><i class="fas fa-microphone"></i></div>
+    <div class="setting-info">
+      <div class="setting-label">القراءة الصوتية</div>
+      <div class="setting-desc">Web Speech · قراءة الأسئلة</div>
+    </div>
+    <div class="toggle on" id="togSpeech"></div>
+  </div>
+
+  <div class="setting-item">
+    <div class="setting-icon"><i class="fas fa-tachometer-alt"></i></div>
+    <div class="setting-info">
+      <div class="setting-label">سرعة القراءة</div>
+      <div class="setting-desc">للأطفال: بطيء | للكبار: عادي</div>
+    </div>
+    <button class="btn ghost" style="width:auto;padding:8px 14px;font-size:12px" id="btnSpeechRate">عادي</button>
+  </div>
+
+  <div class="setting-item">
+    <div class="setting-icon"><i class="fas fa-trash-can"></i></div>
+    <div class="setting-info">
+      <div class="setting-label">حذف التقدم</div>
+      <div class="setting-desc">إعادة تعيين كاملة</div>
+    </div>
+    <button class="btn danger" style="width:auto;padding:8px 14px;font-size:12px" id="btnReset">حذف</button>
+  </div>
+
+  <div class="save-notice" style="max-width:100%;margin-top:14px">
+    <i class="fas fa-triangle-exclamation"></i>
+    <span>⚠️ جميع البيانات محفوظة محليًا. مسح الكاش أو تغيير الجهاز يمحو تقدمك.</span>
+  </div>
+</section>
+
+</div>
+
+<nav class="tabbar" id="tabbar">
+  <button class="tab-btn active" data-tab="home"><i class="fas fa-house"></i><span>الرئيسية</span></button>
+  <button class="tab-btn" data-tab="quiz"><i class="fas fa-circle-question"></i><span>أسئلة</span></button>
+  <button class="tab-btn" data-tab="puzzles"><i class="fas fa-puzzle-piece"></i><span>ألغاز</span></button>
+  <button class="tab-btn" data-tab="brain"><i class="fas fa-brain"></i><span>ذكاء</span></button>
+  <button class="tab-btn" data-tab="more"><i class="fas fa-gamepad"></i><span>المزيد</span></button>
+</nav>
+
+<div class="lockout" id="lockout">
+  <div class="lockout-box">
+    <div class="lockout-icon"><i class="fas fa-lock"></i></div>
+    <div class="lockout-title">نفدت محاولاتك!</div>
+    <p class="lockout-desc">انتظر قليلاً حتى تُعاد المحاولات تلقائيًا<br>أو أكمل مرحلة للحصول على محاولتين إضافيتين</p>
+    <div class="lockout-timer" id="lockoutTimer">10:00</div>
+    <button class="btn ghost" id="btnCloseLockout">حسناً</button>
+  </div>
+</div>
+
+<div class="modal-bg" id="modal">
+  <div class="modal-box">
+    <h3 id="modalTitle">تأكيد</h3>
+    <p id="modalDesc">هل أنت متأكد؟</p>
+    <div class="modal-actions">
+      <button class="btn ghost" id="modalCancel" style="flex:1">إلغاء</button>
+      <button class="btn danger" id="modalConfirm" style="flex:1">تأكيد</button>
+    </div>
+  </div>
+</div>
+
+<script>
+"use strict";
+
+/* ================================================================
+   UTILS
+   ================================================================ */
+const $ = s => document.querySelector(s);
+const $$ = s => document.querySelectorAll(s);
+const ri = (a,b) => Math.floor(Math.random()*(b-a+1))+a;
+const pick = a => a[Math.floor(Math.random()*a.length)];
+const shuffle = a => { for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a; };
+const vibrate = p => { try{navigator.vibrate(p);}catch(e){} };
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+/* ================================================================
+   AVATARS
+   ================================================================ */
+const AVATARS = [
+  {id:'boy1', src:'https://famo-pic.gt.tc/view.php?k=dc0dfb34e441b7ca1f9f754bcfba0303e0a2c9895d2b36ce', fallback:'fa-user', color:'#38bdf8'},
+  {id:'boy2', src:'https://famo-pic.gt.tc/view.php?k=436dee1daab62c734ba6e93ba6fe451632bf55c8e7e867a1', fallback:'fa-user', color:'#10b981'},
+  {id:'girl1', src:'https://famo-pic.gt.tc/view.php?key=b6634766241511c102e2cab7bc0cba69e8ec6c24c2799e20', fallback:'fa-user', color:'#ec4899'},
+  {id:'girl2', src:'https://famo-pic.gt.tc/view.php?k=71db0845622519940357ecfd1fad951b172f4986b26eaec0', fallback:'fa-user', color:'#fbbf24'},
+  {id:'girl3', src:'https://famo-pic.gt.tc/view.php?k=a8bdfb3381522e7a8d4f89166960d27baba85ea4ed12a2d3', fallback:'fa-user', color:'#a855f7'}
+];
+
+const AGE_LABELS = {'3-5':'3-5 سنين','6-8':'6-8 سنين','9-12':'9-12 سنة','13-18':'13-18 سنة','19+':'19+ سنة'};
+const AGE_MAX_LEVELS = {'3-5':15,'6-8':20,'9-12':25,'13-18':30,'19+':30};
+
+function getAgeCategories(age){
+  if(age === '3-5') return [
+    {id:'animals', name:'الحيوانات', icon:'fa-paw', color:'#ec4899'},
+    {id:'colors', name:'الألوان', icon:'fa-palette', color:'#fbbf24'},
+    {id:'numbers', name:'الأرقام', icon:'fa-hashtag', color:'#10b981'},
+    {id:'fruits', name:'الفواكه', icon:'fa-apple-whole', color:'#ef4444'},
+    {id:'family', name:'العائلة', icon:'fa-people-group', color:'#a855f7'},
+    {id:'nature', name:'الطبيعة', icon:'fa-sun', color:'#38bdf8'}
+  ];
+  if(age === '6-8') return [
+    {id:'animals', name:'الحيوانات', icon:'fa-paw', color:'#ec4899'},
+    {id:'math', name:'رياضيات', icon:'fa-calculator', color:'#10b981'},
+    {id:'science', name:'علوم', icon:'fa-flask', color:'#38bdf8'},
+    {id:'capital', name:'العواصم', icon:'fa-globe', color:'#fbbf24'},
+    {id:'islamic', name:'إسلاميات', icon:'fa-mosque', color:'#a855f7'},
+    {id:'sports', name:'رياضة', icon:'fa-futbol', color:'#ef4444'}
+  ];
+  if(age === '9-12') return [
+    {id:'geo', name:'جغرافيا', icon:'fa-globe', color:'#10b981'},
+    {id:'history', name:'تاريخ', icon:'fa-scroll', color:'#fbbf24'},
+    {id:'science', name:'العلوم', icon:'fa-flask', color:'#38bdf8'},
+    {id:'math', name:'رياضيات', icon:'fa-calculator', color:'#ec4899'},
+    {id:'sports', name:'رياضة', icon:'fa-futbol', color:'#ef4444'},
+    {id:'general', name:'معلومات عامة', icon:'fa-brain', color:'#a855f7'}
+  ];
+  return [
+    {id:'football', name:'كرة قدم', icon:'fa-futbol', color:'#10b981'},
+    {id:'basketball', name:'كرة سلة', icon:'fa-basketball', color:'#fbbf24'},
+    {id:'handball', name:'كرة يد', icon:'fa-hand-fist', color:'#38bdf8'},
+    {id:'wrestling', name:'مصارعة', icon:'fa-dumbbell', color:'#ec4899'},
+    {id:'karate', name:'كاراتيه', icon:'fa-user-ninja', color:'#ef4444'},
+    {id:'tennis', name:'تنس', icon:'fa-table-tennis-paddle-ball', color:'#a855f7'},
+    {id:'tabletennis', name:'تنس طاولة', icon:'fa-table-tennis-paddle-ball', color:'#10b981'},
+    {id:'history', name:'تاريخ', icon:'fa-scroll', color:'#fbbf24'},
+    {id:'geo', name:'جغرافيا', icon:'fa-globe', color:'#38bdf8'},
+    {id:'science', name:'علوم', icon:'fa-flask', color:'#ec4899'},
+    {id:'math', name:'رياضيات', icon:'fa-calculator', color:'#a855f7'}
+  ];
+}
+
+/* ================================================================
+   DATA BANKS
+   ================================================================ */
+const COUNTRIES = [
+  ['مصر','القاهرة'],['السعودية','الرياض'],['الإمارات','أبوظبي'],['الكويت','الكويت'],
+  ['قطر','الدوحة'],['البحرين','المنامة'],['عمان','مسقط'],['الأردن','عمّان'],
+  ['لبنان','بيروت'],['سوريا','دمشق'],['العراق','بغداد'],['اليمن','صنعاء'],
+  ['فلسطين','القدس'],['السودان','الخرطوم'],['ليبيا','طرابلس'],['تونس','تونس'],
+  ['الجزائر','الجزائر'],['المغرب','الرباط'],['موريتانيا','نواكشوط'],['الصومال','مقديشو'],
+  ['فرنسا','باريس'],['ألمانيا','برلين'],['إيطاليا','روما'],['إسبانيا','مدريد'],
+  ['البرتغال','لشبونة'],['بريطانيا','لندن'],['هولندا','أمستردام'],['بلجيكا','بروكسل'],
+  ['سويسرا','برن'],['السويد','ستوكهولم'],['النرويج','أوسلو'],['الدنمارك','كوبنهاغن'],
+  ['فنلندا','هلسنكي'],['اليونان','أثينا'],['تركيا','أنقرة'],['روسيا','موسكو'],
+  ['أوكرانيا','كييف'],['بولندا','وارسو'],['النمسا','فيينا'],['المجر','بودابست'],
+  ['أمريكا','واشنطن'],['كندا','أوتاوا'],['المكسيك','مكسيكو سيتي'],['البرازيل','برازيليا'],
+  ['الأرجنتين','بوينس آيرس'],['تشيلي','سانتياغو'],['بيرو','ليما'],['كولومبيا','بوغوتا'],
+  ['فنزويلا','كاراكاس'],['أوروغواي','مونتيفيديو'],['الصين','بكين'],['اليابان','طوكيو'],
+  ['كوريا الجنوبية','سيول'],['الهند','نيودلهي'],['باكستان','إسلام آباد'],['إندونيسيا','جاكرتا'],
+  ['ماليزيا','كوالالمبور'],['تايلاند','بانكوك'],['فيتنام','هانوي'],['الفلبين','مانيلا'],
+  ['أستراليا','كانبرا'],['نيوزيلندا','ويلينغتون'],['جنوب أفريقيا','بريتوريا'],['نيجيريا','أبوجا'],
+  ['كينيا','نيروبي'],['إثيوبيا','أديس أبابا'],['غانا','أكرا'],['السنغال','داكار'],
+  ['الكاميرون','ياوندي'],['أوغندا','كمبالا'],['إيران','طهران'],['أفغانستان','كابول'],
+  ['كازاخستان','أستانا'],['أذربيجان','باكو'],['جورجيا','تبليسي'],['أرمينيا','يريفان'],
+  ['كوبا','هافانا'],['جامايكا','كينغستون'],['بنما','بنما سيتي'],['كوستاريكا','سان خوسيه']
+];
+
+const WC = [
+  {y:1930,host:'أوروغواي',ch:'أوروغواي',ru:'الأرجنتين',top:'غييرمو ستابيلي'},
+  {y:1934,host:'إيطاليا',ch:'إيطاليا',ru:'تشيكوسلوفاكيا',top:'أولدرايخ نيدلي'},
+  {y:1938,host:'فرنسا',ch:'إيطاليا',ru:'المجر',top:'ليونيداس'},
+  {y:1950,host:'البرازيل',ch:'أوروغواي',ru:'البرازيل',top:'أديمير'},
+  {y:1954,host:'سويسرا',ch:'ألمانيا الغربية',ru:'المجر',top:'شاندور كوتشيتش'},
+  {y:1958,host:'السويد',ch:'البرازيل',ru:'السويد',top:'جوست فونتين'},
+  {y:1962,host:'تشيلي',ch:'البرازيل',ru:'تشيكوسلوفاكيا',top:'فلوريان ألبرت'},
+  {y:1966,host:'إنجلترا',ch:'إنجلترا',ru:'ألمانيا الغربية',top:'يوزيبيو'},
+  {y:1970,host:'المكسيك',ch:'البرازيل',ru:'إيطاليا',top:'غيرد مولر'},
+  {y:1974,host:'ألمانيا الغربية',ch:'ألمانيا الغربية',ru:'هولندا',top:'غجيغوج لاتو'},
+  {y:1978,host:'الأرجنتين',ch:'الأرجنتين',ru:'هولندا',top:'ماريو كيمبس'},
+  {y:1982,host:'إسبانيا',ch:'إيطاليا',ru:'ألمانيا الغربية',top:'باولو روسي'},
+  {y:1986,host:'المكسيك',ch:'الأرجنتين',ru:'ألمانيا الغربية',top:'غاري لينيكر'},
+  {y:1990,host:'إيطاليا',ch:'ألمانيا الغربية',ru:'الأرجنتين',top:'سالفاتوري سكيلاتشي'},
+  {y:1994,host:'الولايات المتحدة',ch:'البرازيل',ru:'إيطاليا',top:'أوليغ سالينكو'},
+  {y:1998,host:'فرنسا',ch:'فرنسا',ru:'البرازيل',top:'دافور شوكر'},
+  {y:2002,host:'كوريا واليابان',ch:'البرازيل',ru:'ألمانيا',top:'رونالدو'},
+  {y:2006,host:'ألمانيا',ch:'إيطاليا',ru:'فرنسا',top:'ميروسلاف كلوزه'},
+  {y:2010,host:'جنوب أفريقيا',ch:'إسبانيا',ru:'هولندا',top:'توماس مولر'},
+  {y:2014,host:'البرازيل',ch:'ألمانيا',ru:'الأرجنتين',top:'خاميس رودريغيز'},
+  {y:2018,host:'روسيا',ch:'فرنسا',ru:'كرواتيا',top:'هاري كين'},
+  {y:2022,host:'قطر',ch:'الأرجنتين',ru:'فرنسا',top:'كيليان مبابي'}
+];
+
+const BANK_KIDS_3_5 = [
+  {q:'ما هذا الحيوان الذي يقول "مواء"؟', a:'القط', w:['الكلب','البقرة','الحصان']},
+  {q:'ما هذا الحيوان الذي يقول "هاو هاو"؟', a:'الكلب', w:['القط','الأسد','الفيل']},
+  {q:'ما لون السماء في النهار؟', a:'أزرق', w:['أحمر','أخضر','أصفر']},
+  {q:'ما لون الموز؟', a:'أصفر', w:['أحمر','أزرق','أسود']},
+  {q:'ما لون الفراولة؟', a:'أحمر', w:['أزرق','أخضر','بنفسجي']},
+  {q:'ما لون العشب؟', a:'أخضر', w:['أحمر','أزرق','أبيض']},
+  {q:'كم عدد أصابع اليد الواحدة؟', a:'5', w:['3','4','6']},
+  {q:'ما شكل كرة القدم؟', a:'دائرة', w:['مربع','مثلث','مستطيل']},
+  {q:'ما شكل التلفاز؟', a:'مستطيل', w:['دائرة','مثلث','نجمة']},
+  {q:'من هو أبو أبيك؟', a:'جدي', w:['عمي','خالي','أخي']},
+  {q:'من هي أم أمك؟', a:'جدتي', w:['خالتي','عمتي','أختي']},
+  {q:'كم عدد عيون القط؟', a:'2', w:['1','3','4']},
+  {q:'ما الحيوان الأكبر حجماً؟', a:'الفيل', w:['القط','الفأر','الأرنب']},
+  {q:'ما الحيوان الأطول رقبة؟', a:'الزرافة', w:['الفيل','الأسد','النمر']},
+  {q:'ما الحيوان الذي يطير؟', a:'العصفور', w:['القط','السمكة','الكلب']},
+  {q:'أين يعيش السمك؟', a:'في الماء', w:['في الشجرة','في الرمل','في السماء']},
+  {q:'ما الشيء الذي نستخدمه للكتابة؟', a:'القلم', w:['الملعقة','الوسادة','الكوب']},
+  {q:'ماذا نشرب لنعيش؟', a:'الماء', w:['الحجر','الورق','الخشب']},
+  {q:'ماذا نأكل من الشجرة؟', a:'الفواكه', w:['الحجارة','الحديد','الزجاج']},
+  {q:'كم عدد أرجل الكرسي عادةً؟', a:'4', w:['2','3','5']},
+  {q:'ماذا يلبس الإنسان في قدميه؟', a:'الحذاء', w:['القبعة','القفاز','النظارة']},
+  {q:'أين يسكن الناس؟', a:'في البيت', w:['في الشارع','في البحر','في الجبل']},
+  {q:'ما الذي نستخدمه لتنظيف أسناننا؟', a:'الفرشاة', w:['الملعقة','المشط','المفتاح']},
+  {q:'ماذا نضع على رؤوسنا من الشمس؟', a:'القبعة', w:['الحذاء','الجوارب','الحزام']},
+  {q:'ماذا يطير في السماء؟', a:'الطائرة', w:['السيارة','الدراجة','القطار']},
+  {q:'ما الذي يمشي على القضبان؟', a:'القطار', w:['السيارة','الطائرة','السفينة']},
+  {q:'ما الذي يسير في البحر؟', a:'السفينة', w:['القطار','الطائرة','السيارة']},
+  {q:'ما الحيوان الذي يعطينا الحليب؟', a:'البقرة', w:['الكلب','الأسد','القط']},
+  {q:'ما الحيوان الذي ينام كثيراً؟', a:'القط', w:['الحصان','الأسد','الذئب']},
+  {q:'في أي يوم من الأسبوع نرتاح؟', a:'الجمعة', w:['السبت','الأحد','الاثنين']},
+  {q:'كم عدد أيام الأسبوع؟', a:'7', w:['5','6','8']},
+  {q:'ما الشيء الذي يضيء في الليل؟', a:'القمر', w:['الشمس','المصباح','النجم']},
+  {q:'ما الشيء الذي يضيء في النهار؟', a:'الشمس', w:['القمر','النجوم','المصباح']},
+  {q:'ما لون الشمس؟', a:'أصفر', w:['أزرق','أخضر','أسود']},
+  {q:'ماذا نستخدم لحمل الأشياء الثقيلة؟', a:'اليدين', w:['القدمين','الأنف','الأذن']},
+  {q:'ماذا نستخدم للسمع؟', a:'الأذن', w:['العين','الأنف','الفم']},
+  {q:'ماذا نستخدم للرؤية؟', a:'العين', w:['الأذن','الأنف','اليد']},
+  {q:'ماذا نستخدم للشم؟', a:'الأنف', w:['العين','الأذن','القدم']},
+  {q:'أين نشم رائحة الورد؟', a:'بالأنف', w:['بالأذن','بالعين','بالقدم']},
+  {q:'ما الذي نطبخ فيه الطعام؟', a:'القدر', w:['الكتاب','القلم','الحذاء']},
+  {q:'ما الذي ننام عليه؟', a:'السرير', w:['الكرسي','الطاولة','الباب']},
+  {q:'ما الذي نجلس عليه؟', a:'الكرسي', w:['السرير','الباب','السقف']},
+  {q:'كم عدد ألوان قوس قزح؟', a:'7', w:['3','5','10']},
+  {q:'ما لون الحليب؟', a:'أبيض', w:['أسود','أحمر','أزرق']},
+  {q:'ما الحيوان الذي له خرطوم؟', a:'الفيل', w:['الأسد','النمر','الحصان']},
+  {q:'أين يقف المعلم؟', a:'في الفصل', w:['في المطبخ','في الحمام','في الحديقة']},
+  {q:'ماذا نشرب في الصباح؟', a:'الحليب', w:['الماء المالح','الصابون','الزيت']},
+  {q:'ماذا نأكل في الصباح؟', a:'الفطور', w:['الغداء','العشاء','الحلوى']},
+  {q:'ما لون الورقة العادية؟', a:'أبيض', w:['أسود','أحمر','أزرق']},
+  {q:'ما الحيوان الذي يطير في الليل؟', a:'البومة', w:['الأسد','القط','الكلب']}
+];
+
+const BANK_KIDS_6_8 = [
+  {q:'كم يساوي 5 + 3؟', a:'8', w:['7','9','10']},
+  {q:'كم يساوي 10 - 4؟', a:'6', w:['5','7','14']},
+  {q:'كم يساوي 3 × 3؟', a:'9', w:['6','12','15']},
+  {q:'كم يساوي 20 ÷ 4؟', a:'5', w:['4','6','8']},
+  {q:'أي حيوان يطير ولا يرى؟', a:'الخفاش', w:['البومة','النسر','العصفور']},
+  {q:'ما أسرع حيوان في العالم؟', a:'الفهد', w:['الأسد','الحصان','الغزال']},
+  {q:'ما أكبر حيوان في العالم؟', a:'الحوت الأزرق', w:['الفيل','الزرافة','القرش']},
+  {q:'ما الحيوان الذي يعيش في القارة القطبية؟', a:'البطريق', w:['الأسد','الجمل','النمر']},
+  {q:'ماذا يأكل الأرنب؟', a:'الجزر', w:['اللحم','السمك','الحلوى']},
+  {q:'كم عدد أرجل العنكبوت؟', a:'8', w:['6','4','10']},
+  {q:'كم عدد أرجل النحلة؟', a:'6', w:['4','8','10']},
+  {q:'ما الحيوان الذي يحمل بيته؟', a:'السلحفاة', w:['الكلب','الأسد','الحصان']},
+  {q:'ما الحيوان الذي يغيّر لونه؟', a:'الحرباء', w:['القط','الكلب','الأرنب']},
+  {q:'من ينتج العسل؟', a:'النحل', w:['الفراشة','الذبابة','النمل']},
+  {q:'ما عاصمة مصر؟', a:'القاهرة', w:['الإسكندرية','الجيزة','أسوان']},
+  {q:'ما عاصمة السعودية؟', a:'الرياض', w:['جدة','مكة','الدمام']},
+  {q:'كم عدد ألوان العلم المصري؟', a:'3', w:['2','4','5']},
+  {q:'ما لون العلم المصري العلوي؟', a:'أحمر', w:['أبيض','أسود','أخضر']},
+  {q:'في أي فصل يكون الجو حاراً؟', a:'الصيف', w:['الشتاء','الخريف','الربيع']},
+  {q:'في أي فصل تتساقط أوراق الشجر؟', a:'الخريف', w:['الصيف','الشتاء','الربيع']},
+  {q:'ما الذي يغطي الأرض في الشتاء؟', a:'المطر', w:['الثلج','الرمال','الورد']},
+  {q:'كم ساعة في اليوم؟', a:'24', w:['12','20','30']},
+  {q:'كم دقيقة في الساعة؟', a:'60', w:['30','100','24']},
+  {q:'كم ثانية في الدقيقة؟', a:'60', w:['30','100','24']},
+  {q:'أي شهر عدد أيامه 28 أو 29؟', a:'فبراير', w:['يناير','مارس','أبريل']},
+  {q:'كم عدد الصلوات المفروضة في اليوم؟', a:'5', w:['3','4','6']},
+  {q:'ما أول شهور السنة الهجرية؟', a:'محرم', w:['رمضان','شوال','ذو الحجة']},
+  {q:'ما أول شهور السنة الميلادية؟', a:'يناير', w:['ديسمبر','مارس','يونيو']},
+  {q:'من أول من نزل عليه الوحي؟', a:'محمد ﷺ', w:['موسى','عيسى','إبراهيم']},
+  {q:'كم عدد أركان الإسلام؟', a:'5', w:['3','4','6']},
+  {q:'كم عدد أركان الإيمان؟', a:'6', w:['3','4','5']},
+  {q:'ما أول مسجد بُني في الإسلام؟', a:'قباء', w:['المسجد النبوي','المسجد الحرام','المسجد الأقصى']},
+  {q:'في أي مدينة المسجد النبوي؟', a:'المدينة المنورة', w:['مكة','الرياض','الطائف']},
+  {q:'ما كتاب المسلمين؟', a:'القرآن', w:['الإنجيل','التوراة','الزبور']},
+  {q:'من خاتم الأنبياء؟', a:'محمد ﷺ', w:['موسى','عيسى','يوسف']},
+  {q:'ما أطول نهر في مصر؟', a:'النيل', w:['الفرات','دجلة','الأردن']},
+  {q:'ما أكبر مدينة في مصر؟', a:'القاهرة', w:['الإسكندرية','الجيزة','بورسعيد']},
+  {q:'أين توجد الأهرامات؟', a:'الجيزة', w:['الأقصر','أسوان','الإسكندرية']},
+  {q:'ما اسم النهر الذي يمر ببغداد؟', a:'دجلة', w:['النيل','الفرات','الأردن']},
+  {q:'ما هي أكبر قارة في العالم؟', a:'آسيا', w:['أفريقيا','أوروبا','أمريكا']},
+  {q:'ما هي أصغر قارة في العالم؟', a:'أستراليا', w:['أوروبا','أفريقيا','آسيا']},
+  {q:'ما أكبر محيط في العالم؟', a:'الهادئ', w:['الأطلسي','الهندي','المتجمد']},
+  {q:'كم عدد القارات في العالم؟', a:'7', w:['5','6','8']},
+  {q:'كم عدد المحيطات في العالم؟', a:'5', w:['3','4','6']},
+  {q:'ما هي أكبر دولة في العالم مساحةً؟', a:'روسيا', w:['كندا','الصين','أمريكا']},
+  {q:'ما هي أصغر دولة في العالم؟', a:'الفاتيكان', w:['موناكو','مالطا','البحرين']},
+  {q:'ما عاصمة فرنسا؟', a:'باريس', w:['ليون','مرسيليا','نيس']},
+  {q:'ما عاصمة بريطانيا؟', a:'لندن', w:['مانشستر','ليفربول','أكسفورد']},
+  {q:'ما عاصمة إيطاليا؟', a:'روما', w:['ميلانو','البندقية','نابولي']},
+  {q:'ما عاصمة أمريكا؟', a:'واشنطن', w:['نيويورك','لوس أنجلوس','شيكاغو']},
+  {q:'كم عدد حروف الأبجدية العربية؟', a:'28', w:['26','30','24']},
+  {q:'كم عدد حروف الأبجدية الإنجليزية؟', a:'26', w:['24','28','30']},
+  {q:'ما اسم أول يوم في الأسبوع؟', a:'السبت', w:['الأحد','الجمعة','الاثنين']},
+  {q:'ما اسم آخر يوم في الأسبوع؟', a:'الجمعة', w:['السبت','الخميس','الأحد']},
+  {q:'أين يوجد القلب؟', a:'في الصدر', w:['في الرأس','في البطن','في القدم']},
+  {q:'ما وظيفة الرئة؟', a:'التنفس', w:['الهضم','التفكير','السمع']},
+  {q:'ما وظيفة المعدة؟', a:'الهضم', w:['التنفس','السمع','الرؤية']},
+  {q:'كم عدد حواس الإنسان؟', a:'5', w:['3','4','6']},
+  {q:'كم عدد فصول السنة؟', a:'4', w:['2','3','5']},
+  {q:'ما أبرد فصل في السنة؟', a:'الشتاء', w:['الصيف','الخريف','الربيع']},
+  {q:'ما أحر فصل في السنة؟', a:'الصيف', w:['الشتاء','الخريف','الربيع']},
+  {q:'في أي فصل تتفتح الأزهار؟', a:'الربيع', w:['الشتاء','الصيف','الخريف']},
+  {q:'ما العضو الذي يستخدمه الإنسان للتفكير؟', a:'الدماغ', w:['القلب','المعدة','الرئة']},
+  {q:'من اخترع المصباح الكهربائي؟', a:'إديسون', w:['نيوتن','أينشتاين','غراهام بيل']},
+  {q:'من اخترع الهاتف؟', a:'غراهام بيل', w:['إديسون','نيوتن','ماركوني']},
+  {q:'من اكتشف الجاذبية؟', a:'نيوتن', w:['أينشتاين','إديسون','غاليليو']},
+  {q:'ما هو الكوكب الذي نعيش عليه؟', a:'الأرض', w:['المريخ','المشتري','الزهرة']},
+  {q:'كم عدد الكواكب في المجموعة الشمسية؟', a:'8', w:['7','9','10']},
+  {q:'ما الكوكب الأقرب للشمس؟', a:'عطارد', w:['الزهرة','الأرض','المريخ']},
+  {q:'ما الكوكب الأحمر؟', a:'المريخ', w:['المشتري','الزهرة','زحل']},
+  {q:'ما الكوكب ذو الحلقات الشهيرة؟', a:'زحل', w:['المشتري','نبتون','الأرض']}
+];
+
+const BANK_KIDS_9_12 = [
+  {q:'ما ناتج 15 × 4؟', a:'60', w:['45','55','75']},
+  {q:'ما ناتج 144 ÷ 12؟', a:'12', w:['10','14','16']},
+  {q:'ما الجذر التربيعي لـ 81؟', a:'9', w:['7','8','11']},
+  {q:'ما ناتج 25% من 200؟', a:'50', w:['25','40','60']},
+  {q:'ما مساحة مستطيل 5 × 8؟', a:'40', w:['13','26','30']},
+  {q:'ما محيط مربع طول ضلعه 6؟', a:'24', w:['12','18','36']},
+  {q:'كم يساوي 2^5؟', a:'32', w:['16','24','64']},
+  {q:'ما ناتج 100 - 37؟', a:'63', w:['53','67','73']},
+  {q:'كم ثانية في الساعة؟', a:'3600', w:['600','360','6000']},
+  {q:'ما مجموع زوايا المثلث؟', a:'180', w:['90','270','360']},
+  {q:'ما مجموع زوايا المربع؟', a:'360', w:['180','270','540']},
+  {q:'أي قارة هي الأكبر؟', a:'آسيا', w:['أفريقيا','أوروبا','أمريكا']},
+  {q:'أي قارة هي الأكثر سكاناً؟', a:'آسيا', w:['أفريقيا','أوروبا','أمريكا']},
+  {q:'أي صحراء هي الأكبر في العالم؟', a:'الصحراء الكبرى', w:['الربع الخالي','غوبي','كالاهاري']},
+  {q:'ما أطول نهر في العالم؟', a:'النيل', w:['الأمازون','المسيسيبي','اليانغتسي']},
+  {q:'ما أعلى جبل في العالم؟', a:'إيفرست', w:['كليمنجارو','مونت بلانك','إلبروس']},
+  {q:'ما الدولة التي تُلقب بـ"بلاد الشمس المشرقة"؟', a:'اليابان', w:['الصين','كوريا','تايلاند']},
+  {q:'ما الدولة التي تُلقب بـ"بلاد النيل"؟', a:'مصر', w:['السودان','إثيوبيا','أوغندا']},
+  {q:'في أي قارة تقع مصر؟', a:'أفريقيا', w:['آسيا','أوروبا','أستراليا']},
+  {q:'في أي قارة تقع البرازيل؟', a:'أمريكا الجنوبية', w:['الشمالية','أوروبا','أفريقيا']},
+  {q:'في أي قارة تقع أستراليا؟', a:'أستراليا', w:['آسيا','أفريقيا','أوروبا']},
+  {q:'ما أطول سور في العالم؟', a:'سور الصين العظيم', w:['سور برلين','سور بابل','سور هادريان']},
+  {q:'في أي دولة توجد البتراء؟', a:'الأردن', w:['مصر','لبنان','سوريا']},
+  {q:'في أي دولة توجد تاج محل؟', a:'الهند', w:['باكستان','إيران','الصين']},
+  {q:'في أي مدينة برج إيفل؟', a:'باريس', w:['لندن','روما','برلين']},
+  {q:'في أي عام ثارت مصر ضد الاحتلال البريطاني (ثورة 1919)؟', a:'1919', w:['1952','1881','1906']},
+  {q:'في أي عام قامت ثورة 23 يوليو؟', a:'1952', w:['1919','1973','1967']},
+  {q:'في أي عام انتصرت مصر في حرب أكتوبر؟', a:'1973', w:['1967','1956','1948']},
+  {q:'من فتح مصر في الإسلام؟', a:'عمرو بن العاص', w:['خالد بن الوليد','سعد بن أبي وقاص','طارق بن زياد']},
+  {q:'من فتح الأندلس؟', a:'طارق بن زياد', w:['عمرو بن العاص','خالد','صلاح الدين']},
+  {q:'من قائد معركة حطين؟', a:'صلاح الدين', w:['خالد','عمرو','طارق']},
+  {q:'في أي عام هبط الإنسان على القمر؟', a:'1969', w:['1965','1961','1972']},
+  {q:'من أول من صعد إلى الفضاء؟', a:'يوري غاغارين', w:['نيل أرمسترونج','باز ألدرين','جون غلين']},
+  {q:'من اكتشف البنسلين؟', a:'فلمنغ', w:['باستور','كوخ','جينر']},
+  {q:'من صاحب نظرية النسبية؟', a:'أينشتاين', w:['نيوتن','غاليليو','كبلر']},
+  {q:'من صاحب نظرية التطور؟', a:'داروين', w:['لامارك','مندل','نيوتن']},
+  {q:'من صاحب قوانين الحركة؟', a:'نيوتن', w:['أينشتاين','غاليليو','أرخميدس']},
+  {q:'ما وحدة قياس القوة؟', a:'نيوتن', w:['جول','واط','أمبير']},
+  {q:'ما وحدة قياس الطاقة؟', a:'جول', w:['نيوتن','واط','فولت']},
+  {q:'ما وحدة قياس التيار؟', a:'أمبير', w:['فولت','أوم','واط']},
+  {q:'ما الصيغة الكيميائية للماء؟', a:'H2O', w:['CO2','O2','H2O2']},
+  {q:'ما الغاز الذي نتنفسه؟', a:'أكسجين', w:['نيتروجين','هيدروجين','ثاني أكسيد الكربون']},
+  {q:'عند أي درجة يتجمد الماء؟', a:'0', w:['100','-10','10']},
+  {q:'عند أي درجة يغلي الماء؟', a:'100', w:['90','80','120']},
+  {q:'كم عدد أسنان الشخص البالغ؟', a:'32', w:['28','30','36']},
+  {q:'ما أكبر حيوان على الأرض؟', a:'الفيل الأفريقي', w:['وحيد القرن','الزرافة','الحوت']},
+  {q:'ما أكبر حيوان في البحر؟', a:'الحوت الأزرق', w:['القرش الأبيض','الدلفين','الأخطبوط']},
+  {q:'ما الكوكب الذي يُعرف بالكوكب الأحمر؟', a:'المريخ', w:['المشتري','الزهرة','زحل']},
+  {q:'ما الكوكب الأكبر في المجموعة الشمسية؟', a:'المشتري', w:['زحل','نبتون','الأرض']},
+  {q:'كم عدد كواكب المجموعة الشمسية؟', a:'8', w:['7','9','10']},
+  {q:'في أي عام تأسست جامعة الدول العربية؟', a:'1945', w:['1948','1950','1940']},
+  {q:'في أي عام سقط جدار برلين؟', a:'1989', w:['1991','1985','1995']},
+  {q:'في أي عام تفكك الاتحاد السوفيتي؟', a:'1991', w:['1989','1993','1985']},
+  {q:'من أول رئيس لأمريكا؟', a:'جورج واشنطن', w:['لينكولن','جيفرسون','آدامز']},
+  {q:'من زعيم الهند الذي ناضل باللاعنف؟', a:'غاندي', w:['نهرو','بوتو','مانديلا']},
+  {q:'من زعيم جنوب أفريقيا ضد الفصل العنصري؟', a:'مانديلا', w:['غاندي','نهرو','توتو']},
+  {q:'ما أول عاصمة للدولة الأموية؟', a:'دمشق', w:['بغداد','المدينة','مكة']},
+  {q:'ما أول عاصمة للدولة العباسية؟', a:'بغداد', w:['دمشق','القاهرة','سامراء']},
+  {q:'من بنى بغداد؟', a:'أبو جعفر المنصور', w:['هارون الرشيد','المأمون','الأمين']},
+  {q:'من مؤسس الدولة الأيوبية؟', a:'صلاح الدين', w:['نور الدين','بيبرس','قطز']}
+];
+
+const BANK_MATH = [
+  {q:'ما ناتج 7×8؟', a:'56', w:['54','48','64']},
+  {q:'ما جذر 144؟', a:'12', w:['11','13','14']},
+  {q:'ما ناتج 2^10؟', a:'1024', w:['512','2048','256']},
+  {q:'π تقريباً يساوي؟', a:'3.14', w:['2.71','1.61','3.41']},
+  {q:'مجموع زوايا المثلث؟', a:'180', w:['90','270','360']},
+  {q:'محيط دائرة نصف قطرها 5؟', a:'10π', w:['5π','25π','20π']},
+  {q:'5! = ؟', a:'120', w:['60','100','24']},
+  {q:'0.5 = كسر؟', a:'1/2', w:['1/3','1/4','2/3']},
+  {q:'2 + 2×3 = ؟', a:'8', w:['12','10','6']},
+  {q:'حل 2س=10؟', a:'5', w:['4','8','2']},
+  {q:'مساحة مربع ضلعه 7؟', a:'49', w:['28','14','56']},
+  {q:'15% من 200؟', a:'30', w:['20','15','25']},
+  {q:'الجذر التكعيبي لـ27؟', a:'3', w:['9','6','27']},
+  {q:'أصغر عدد أولي؟', a:'2', w:['1','3','0']},
+  {q:'مربع 12؟', a:'144', w:['132','124','154']},
+  {q:'20 × 20 = ؟', a:'400', w:['200','40','4000']},
+  {q:'3/4 كنسبة مئوية؟', a:'75%', w:['60%','50%','80%']},
+  {q:'العدد التالي: 2,4,6,8,؟', a:'10', w:['9','12','14']},
+  {q:'ما ناتج 9×9؟', a:'81', w:['72','90','99']},
+  {q:'ما ناتج 12×12؟', a:'144', w:['132','156','168']},
+  {q:'ما ناتج 6×7؟', a:'42', w:['36','48','56']},
+  {q:'ما محيط مربع ضلعه 9؟', a:'36', w:['18','81','27']},
+  {q:'كم يساوي 1/2 + 1/4؟', a:'3/4', w:['2/6','1/6','2/4']},
+  {q:'ما ناتج 7^2؟', a:'49', w:['14','36','77']},
+  {q:'ما الجذر التربيعي لـ 225؟', a:'15', w:['12','14','16']},
+  {q:'ما ناتج 56 ÷ 7؟', a:'8', w:['6','7','9']},
+  {q:'كم يساوي 50% من 80؟', a:'40', w:['30','50','20']},
+  {q:'كم يساوي 10% من 500؟', a:'50', w:['10','100','5']},
+  {q:'ما ناتج 13+17؟', a:'30', w:['20','29','31']},
+  {q:'ما ناتج 1000 ÷ 8؟', a:'125', w:['100','110','150']},
+  {q:'ما ناتج 100 - 5×5؟', a:'75', w:['95','25','80']},
+  {q:'إذا كان س+5=12، فما س؟', a:'7', w:['5','6','8']},
+  {q:'إذا كان 2س=16، فما س؟', a:'8', w:['4','6','10']},
+  {q:'ما هو العدد الناقص: 1,4,9,16,_؟', a:'25', w:['20','24','36']},
+  {q:'ما العدد الناقص: 1,1,2,3,5,8,_؟', a:'13', w:['11','10','12']},
+  {q:'ما ناتج 45×2؟', a:'90', w:['80','85','100']},
+  {q:'ما ناتج 12×11؟', a:'132', w:['121','122','142']},
+  {q:'ما ناتج 25×4؟', a:'100', w:['80','75','125']},
+  {q:'ما ناتج 88+12؟', a:'100', w:['90','98','110']},
+  {q:'ما ناتج 3^4؟', a:'81', w:['27','12','64']}
+];
+
+const BANK_CULTURE = [
+  {q:'من مؤلف «المقدمة»؟', a:'ابن خلدون', w:['ابن بطوطة','ابن سينا','ابن رشد']},
+  {q:'كم عدد الدول العربية؟', a:'22', w:['20','23','18']},
+  {q:'أين يقع برج إيفل؟', a:'باريس', w:['لندن','روما','برلين']},
+  {q:'كم عدد سور القرآن؟', a:'114', w:['112','110','120']},
+  {q:'ما عملة اليابان؟', a:'الين', w:['اليوان','الوون','الدولار']},
+  {q:'أطول نهر في أفريقيا؟', a:'النيل', w:['الكونغو','النيجر','الزمبيزي']},
+  {q:'ما أكبر صحراء حارة؟', a:'الصحراء الكبرى', w:['الربع الخالي','غوبي','كالاهاري']},
+  {q:'ما أكبر دولة مساحة؟', a:'روسيا', w:['كندا','الصين','أمريكا']},
+  {q:'من «شاعر النيل»؟', a:'حافظ إبراهيم', w:['أحمد شوقي','المتنبي','نزار قباني']},
+  {q:'كم يوم في السنة الكبيسة؟', a:'366', w:['365','364','367']},
+  {q:'ما عاصمة كندا؟', a:'أوتاوا', w:['تورونتو','مونتريال','فانكوفر']},
+  {q:'في أي عام بدأت الحرب العالمية الأولى؟', a:'1914', w:['1918','1939','1905']},
+  {q:'ما أكبر جزيرة؟', a:'جرينلاند', w:['مدغشقر','بورنيو','أستراليا']},
+  {q:'أين تقع البتراء؟', a:'الأردن', w:['مصر','لبنان','سوريا']},
+  {q:'ما عاصمة اليابان؟', a:'طوكيو', w:['أوساكا','كيوتو','سيول']},
+  {q:'ما اللغة الأكثر تحدثاً كلغة أم؟', a:'الصينية', w:['الإنجليزية','الإسبانية','الهندية']},
+  {q:'من «أمير الشعراء»؟', a:'أحمد شوقي', w:['حافظ إبراهيم','المتنبي','البحتري']},
+  {q:'ما عاصمة تركيا؟', a:'أنقرة', w:['إسطنبول','إزمير','بورصة']},
+  {q:'كم عدد حروف العربية؟', a:'28', w:['26','29','30']},
+  {q:'ما عاصمة إسبانيا؟', a:'مدريد', w:['برشلونة','إشبيلية','فالنسيا']},
+  {q:'أي مدينة بين قارتين؟', a:'إسطنبول', w:['القاهرة','أثينا','موسكو']},
+  {q:'ما أصغر قارة؟', a:'أستراليا', w:['أوروبا','أنتاركتيكا','أمريكا الجنوبية']},
+  {q:'ما البحر بين آسيا وأفريقيا؟', a:'الأحمر', w:['المتوسط','العرب','الأسود']},
+  {q:'من مؤلف «القانون في الطب»؟', a:'ابن سينا', w:['الرازي','ابن النفيس','ابن رشد']},
+  {q:'ما عاصمة إيطاليا؟', a:'روما', w:['ميلانو','البندقية','نابولي']},
+  {q:'في أي قارة الأرجنتين؟', a:'أمريكا الجنوبية', w:['الشمالية','أوروبا','أفريقيا']},
+  {q:'ما أطول سور في العالم؟', a:'سور الصين', w:['برلين','هاديان','بابل']},
+  {q:'كم عدد أعضاء جامعة الدول العربية؟', a:'22', w:['20','23','18']},
+  {q:'ما عاصمة ألمانيا؟', a:'برلين', w:['ميونخ','هامبورغ','فرانكفورت']},
+  {q:'ما عاصمة روسيا؟', a:'موسكو', w:['سانت بطرسبرغ','كييف','مينسك']},
+  {q:'ما عاصمة الصين؟', a:'بكين', w:['شنغهاي','هونغ كونغ','تايوان']},
+  {q:'ما عاصمة الهند؟', a:'نيودلهي', w:['مومباي','كالكوتا','بنغالور']},
+  {q:'ما عاصمة البرازيل؟', a:'برازيليا', w:['ريو دي جانيرو','ساو باولو','سلفادور']},
+  {q:'ما عاصمة أستراليا؟', a:'كانبرا', w:['سيدني','ملبورن','بيرث']},
+  {q:'ما عاصمة المكسيك؟', a:'مكسيكو سيتي', w:['غوادالاخارا','مونتيري','بويبلا']},
+  {q:'ما عاصمة الأرجنتين؟', a:'بوينس آيرس', w:['كوردوبا','روساريو','لا بلاتا']},
+  {q:'ما عاصمة مصر؟', a:'القاهرة', w:['الإسكندرية','الجيزة','أسوان']},
+  {q:'ما عاصمة السعودية؟', a:'الرياض', w:['جدة','مكة','الدمام']},
+  {q:'ما عاصمة الإمارات؟', a:'أبوظبي', w:['دبي','الشارقة','عجمان']},
+  {q:'ما عاصمة المغرب؟', a:'الرباط', w:['الدار البيضاء','فاس','مراكش']},
+  {q:'ما عاصمة الجزائر؟', a:'الجزائر', w:['وهران','قسنطينة','عنابة']},
+  {q:'ما عاصمة تونس؟', a:'تونس', w:['صفاقس','سوسة','بنزرت']},
+  {q:'ما عاصمة ليبيا؟', a:'طرابلس', w:['بنغازي','مصراتة','الزاوية']},
+  {q:'ما عاصمة السودان؟', a:'الخرطوم', w:['أم درمان','بورتسودان','كسلا']},
+  {q:'ما عاصمة لبنان؟', a:'بيروت', w:['طرابلس','صيدا','صور']},
+  {q:'ما عاصمة سوريا؟', a:'دمشق', w:['حلب','حمص','اللاذقية']},
+  {q:'ما عاصمة الأردن؟', a:'عمّان', w:['إربد','الزرقاء','العقبة']},
+  {q:'ما عاصمة العراق؟', a:'بغداد', w:['البصرة','الموصل','أربيل']},
+  {q:'ما عاصمة اليمن؟', a:'صنعاء', w:['عدن','تعز','الحديدة']},
+  {q:'ما عاصمة الكويت؟', a:'الكويت', w:['الأحمدي','حولي','الجهراء']},
+  {q:'ما عاصمة قطر؟', a:'الدوحة', w:['الوكرة','الخور','الريان']},
+  {q:'ما عاصمة البحرين؟', a:'المنامة', w:['المحرق','الرفاع','سترة']},
+  {q:'ما عاصمة عُمان؟', a:'مسقط', w:['صلالة','صحار','نزوى']},
+  {q:'ما الدولة التي تُلقب بـ"بلاد العم سام"؟', a:'أمريكا', w:['كندا','بريطانيا','أستراليا']},
+  {q:'ما الدولة التي تُلقب بـ"بلاد النخيل"؟', a:'العراق', w:['السعودية','الإمارات','الكويت']},
+  {q:'ما الدولة التي تُلقب بـ"بلاد السامبا"؟', a:'البرازيل', w:['الأرجنتين','المكسيك','كولومبيا']},
+  {q:'ما الدولة التي تُلقب بـ"بلاد التانغو"؟', a:'الأرجنتين', w:['البرازيل','الأوروغواي','تشيلي']},
+  {q:'ما الدولة التي تُلقب بـ"بلاد البيتزا"؟', a:'إيطاليا', w:['إسبانيا','فرنسا','اليونان']},
+  {q:'ما الدولة التي تُلقب بـ"بلاد الفراعنة"؟', a:'مصر', w:['السودان','ليبيا','العراق']},
+  {q:'من مؤلف «كليلة ودمنة» (مترجم)؟', a:'ابن المقفع', w:['الجاحظ','المتنبي','ابن خلدون']},
+  {q:'من مؤلف «البخلاء»؟', a:'الجاحظ', w:['ابن المقفع','المتنبي','الحريري']},
+  {q:'من «شاعر الحكمة»؟', a:'المتنبي', w:['أبو نواس','البحتري','جرير']},
+  {q:'من «شاعر الخمر»؟', a:'أبو نواس', w:['المتنبي','البحتري','جرير']},
+  {q:'من أول خليفة في الإسلام؟', a:'أبو بكر الصديق', w:['عمر','عثمان','علي']},
+  {q:'ما المنظمة الدولية التي تأسست عام 1945؟', a:'الأمم المتحدة', w:['الناتو','الاتحاد الأوروبي','الجامعة العربية']},
+  {q:'ما أكبر بحر في العالم؟', a:'بحر العرب', w:['البحر الأحمر','البحر المتوسط','البحر الأسود']},
+  {q:'ما أعلى جبل في العالم؟', a:'إيفرست', w:['كليمنجارو','مونت بلانك','إلبروس']},
+  {q:'ما أطول نهر في العالم؟', a:'النيل', w:['الأمازون','المسيسيبي','اليانغتسي']}
+];
+
+const BANK_SCIENCE = [
+  {q:'أكبر كوكب؟', a:'المشتري', w:['زحل','نبتون','الأرض']},
+  {q:'وحدة القوة؟', a:'نيوتن', w:['جول','واط','باسكال']},
+  {q:'رمز الذهب؟', a:'Au', w:['Ag','Fe','Cu']},
+  {q:'غاز البناء الضوئي؟', a:'CO2', w:['أكسجين','نيتروجين','هيدروجين']},
+  {q:'أسنان البالغ؟', a:'32', w:['28','30','36']},
+  {q:'أسرع حيوان بري؟', a:'الفهد', w:['أسد','حصان','غزال']},
+  {q:'وحدة التيار؟', a:'أمبير', w:['فولت','أوم','واط']},
+  {q:'الغاز الأكثر وفرة في الجو؟', a:'نيتروجين', w:['أكسجين','CO2','أرجون']},
+  {q:'أكبر عضو في الجسم؟', a:'الجلد', w:['كبد','رئة','دماغ']},
+  {q:'صيغة الماء؟', a:'H2O', w:['CO2','O2','H2O2']},
+  {q:'صاحب قوانين الحركة؟', a:'نيوتن', w:['أينشتاين','غاليليو','كبلر']},
+  {q:'تجمد الماء؟', a:'0', w:['-10','10','100']},
+  {q:'الكوكب الأحمر؟', a:'المريخ', w:['الزهرة','عطارد','المشتري']},
+  {q:'معدن سائل؟', a:'الزئبق', w:['رصاص','قصدير','ألمنيوم']},
+  {q:'العضو الذي يضخ الدم؟', a:'القلب', w:['كبد','رئة','كلية']},
+  {q:'كروموسومات الإنسان؟', a:'46', w:['23','48','44']},
+  {q:'سرعة الضوء؟', a:'300 ألف كم/ث', w:['150 ألف','30 ألف','3 مليون']},
+  {q:'مكتشف البنسلين؟', a:'فلمنغ', w:['باستور','كوخ','جينر']},
+  {q:'أكبر جزء في الدماغ؟', a:'المخ', w:['المخيخ','جذع الدماغ','النخاع']},
+  {q:'وحدة الطاقة؟', a:'جول', w:['نيوتن','واط','كالوري']},
+  {q:'أقرب كوكب للشمس؟', a:'عطارد', w:['الزهرة','الأرض','المريخ']},
+  {q:'غاز التنفس؟', a:'أكسجين', w:['نيتروجين','CO2','هيليوم']},
+  {q:'نظرية أينشتاين؟', a:'النسبية', w:['التطور','الانفجار','الكوانتم']},
+  {q:'pH الماء النقي؟', a:'7', w:['0','14','5']},
+  {q:'عضو تنقية الدم؟', a:'الكلية', w:['كبد','طحال','بنكرياس']},
+  {q:'Fe = ؟', a:'حديد', w:['فضة','زنك','نحاس']},
+  {q:'عظام البالغ؟', a:'206', w:['186','216','246']},
+  {q:'أكبر عضلة؟', a:'الألوية', w:['الفخذ','القلب','الصدرية']},
+  {q:'توأم الأرض؟', a:'الزهرة', w:['المريخ','عطارد','نبتون']},
+  {q:'حالة الشمس؟', a:'بلازما', w:['غاز','سائل','صلب']},
+  {q:'هرمون السكر؟', a:'الأنسولين', w:['أدرينالين','ثيروكسين','كورتيزول']},
+  {q:'أطول عظم؟', a:'الفخذ', w:['الساق','العضد','العمود']},
+  {q:'كوكب الحلقات؟', a:'زحل', w:['المشتري','أورانوس','نبتون']},
+  {q:'تحول الماء لبخار؟', a:'تبخر', w:['تكثف','تجمد','ترسيب']},
+  {q:'وحدة الضغط؟', a:'باسكال', w:['نيوتن','جول','أمبير']},
+  {q:'ثديي يطير؟', a:'الخفاش', w:['سنجاب','بطريق','نعامة']},
+  {q:'Na = ؟', a:'صوديوم', w:['كبريت','نيتروجين','بوتاسيوم']},
+  {q:'حجرات القلب؟', a:'4', w:['2','3','5']},
+  {q:'مصدر الطاقة الرئيسي للأرض؟', a:'الشمس', w:['رياح','وقود','براكين']},
+  {q:'العنصر الأكثر في القشرة؟', a:'أكسجين', w:['سيليكون','حديد','ألمنيوم']},
+  {q:'مؤسس علم الوراثة؟', a:'مندل', w:['داروين','واتسون','كريك']},
+  {q:'قانون الفعل ورد الفعل؟', a:'نيوتن الثالث', w:['الأول','الثاني','أوم']},
+  {q:'أبعد كوكب؟', a:'نبتون', w:['أورانوس','زحل','بلوتو']},
+  {q:'مضادات الأمراض؟', a:'أجسام مضادة', w:['هرمونات','إنزيمات','صفائح']},
+  {q:'وحدة الكتلة؟', a:'كيلوغرام', w:['جرام','نيوتن','رطل']},
+  {q:'تفاعل الشمس النووي؟', a:'اندماج', w:['انشطار','احتراق','تحلل']},
+  {q:'صاحب التطور؟', a:'داروين', w:['لامارك','مندل','فايسمان']},
+  {q:'العدد الذري للكربون؟', a:'6', w:['8','12','14']},
+  {q:'يربط العضلات بالعظام؟', a:'الوتر', w:['رباط','غضروف','عصب']},
+  {q:'مكتشف الجاذبية؟', a:'نيوتن', w:['أينشتاين','غاليليو','كبلر']},
+  {q:'غاز يشتعل بفرقعة؟', a:'هيدروجين', w:['أكسجين','CO2','نيتروجين']},
+  {q:'كوكب أزرق بسبب الميثان؟', a:'أورانوس', w:['نبتون','زحل','المشتري']},
+  {q:'أشد المعادن صلادة؟', a:'الألماس', w:['حديد','ذهب','فضة']},
+  {q:'العنصر الأكثر في الكون؟', a:'هيدروجين', w:['أكسجين','كربون','نيتروجين']},
+  {q:'مكتشف النواة؟', a:'رذرفورد', w:['طومسون','بور','شادويك']},
+  {q:'حالة المادة الرابعة؟', a:'البلازما', w:['الغاز','السائل','الصلب']},
+  {q:'مقياس قوة الزلازل؟', a:'ريختر', w:['كلفن','نيوتن','تسلا']},
+  {q:'في أي عضو يتم الهضم الرئيسي؟', a:'المعدة', w:['الفم','المريء','الأمعاء']},
+  {q:'أكبر شريان في الجسم؟', a:'الأبهر', w:['الوريد الأجوف','الشريان التاجي','الشعيرات']},
+  {q:'ما وحدة قياس شدة الصوت؟', a:'ديسيبل', w:['هرتز','واط','أمبير']},
+  {q:'ما وحدة قياس التردد؟', a:'هرتز', w:['ديسيبل','واط','فولت']},
+  {q:'كم عدد قلوب الأخطبوط؟', a:'3', w:['1','2','4']},
+  {q:'ما أطول شجرة في العالم؟', a:'السيكويا', w:['الصنوبر','البلوط','النخيل']},
+  {q:'ما النبات الذي ينتج الشوكولاتة؟', a:'الكاكاو', w:['البن','الشاي','الفانيليا']},
+  {q:'ماذا يسمى صغير الحصان؟', a:'مهر', w:['جحش','حمل','عجل']},
+  {q:'ماذا يسمى صغير الأسد؟', a:'شبل', w:['جرو','حمل','مهر']},
+  {q:'ماذا يسمى صغير البقرة؟', a:'عجل', w:['جدي','حمل','مهر']},
+  {q:'كم عدد أذرع الأخطبوط؟', a:'8', w:['6','10','4']},
+  {q:'كم قلب للإنسان؟', a:'1', w:['2','3','4']},
+  {q:'كم رئة للإنسان؟', a:'2', w:['1','3','4']},
+  {q:'كم كلية للإنسان؟', a:'2', w:['1','3','4']},
+  {q:'ما السائل الأحمر في الجسم؟', a:'الدم', w:['الماء','اللعاب','العرق']},
+  {q:'ما الفيتامين الذي نحصل عليه من الشمس؟', a:'D', w:['A','C','B']},
+  {q:'ما الفيتامين الموجود في البرتقال؟', a:'C', w:['A','D','B']},
+  {q:'ما المعدن الموجود في الحليب؟', a:'كالسيوم', w:['حديد','زنك','يود']},
+  {q:'ما المعدن الموجود في السبانخ؟', a:'حديد', w:['كالسيوم','زنك','يود']},
+  {q:'ما الهرمون المسؤول عن النوم؟', a:'الميلاتونين', w:['الأدرينالين','الأنسولين','التستوستيرون']}
+];
+
+const BANK_FOOTBALL = [
+  {q:'كم مرة فازت البرازيل بكأس العالم؟', a:'5', w:['4','6','3']},
+  {q:'من هو الهداف التاريخي لكأس العالم؟', a:'كلوزه', w:['رونالدو','بيليه','ميسي']},
+  {q:'من فاز بأول بطولة كأس عالم؟', a:'أوروغواي', w:['إيطاليا','البرازيل','الأرجنتين']},
+  {q:'كم مرة فازت إيطاليا بكأس العالم؟', a:'4', w:['3','5','2']},
+  {q:'كم مرة فازت ألمانيا بكأس العالم؟', a:'4', w:['3','5','2']},
+  {q:'أين ستُنظَّم بطولة كأس العالم 2026؟', a:'أمريكا وكندا والمكسيك', w:['السعودية','إسبانيا','الصين']},
+  {q:'من كان هداف مونديال 2022؟', a:'مبابي', w:['ميسي','رونالدو','بنزيما']},
+  {q:'من هو الهداف التاريخي لدوري أبطال أوروبا؟', a:'رونالدو', w:['ميسي','ليفا','بنزيما']},
+  {q:'ما هو النادي الأكثر تتويجاً بدوري أبطال أوروبا؟', a:'ريال مدريد', w:['ميلان','بايرن','ليفربول']},
+  {q:'كم مرة فاز ريال مدريد بدوري أبطال أوروبا؟', a:'15', w:['14','13','16']},
+  {q:'من هو اللاعب الذي فاز بالكرة الذهبية 8 مرات؟', a:'ميسي', w:['رونالدو','بيليه','مارادونا']},
+  {q:'كم مرة فاز كريستيانو رونالدو بالكرة الذهبية؟', a:'5', w:['4','6','3']},
+  {q:'من هو اللاعب الذي سجل في 5 مونديالات؟', a:'رونالدو', w:['ميسي','كلوزه','بيليه']},
+  {q:'من فاز بكأس العالم 1986؟', a:'الأرجنتين', w:['ألمانيا','البرازيل','إيطاليا']},
+  {q:'من فاز بكأس العالم 2014؟', a:'ألمانيا', w:['الأرجنتين','البرازيل','هولندا']},
+  {q:'من كان هداف مونديال 2014؟', a:'خاميس', w:['مولر','ميسي','نيمار']},
+  {q:'من كان هداف مونديال 2018؟', a:'هاري كين', w:['مبابي','غريزمان','لوكاكو']},
+  {q:'في أي عام أُقيم أول مونديال في قارة أفريقيا؟', a:'2010', w:['2006','2014','2002']},
+  {q:'في أي عام أُقيم أول مونديال في قارة آسيا؟', a:'2002', w:['2006','1994','2010']},
+  {q:'في أي عام أُقيم أول مونديال في الشرق الأوسط؟', a:'2022', w:['2018','2010','2026']},
+  {q:'من صاحب هدف «يد الله»؟', a:'مارادونا', w:['بيليه','زيدان','ميسي']},
+  {q:'من هو اللاعب الذي رأس برأسه في نهائي 2006؟', a:'زيدان', w:['هنري','تيري','فييرا']},
+  {q:'من فاز بكأس العالم 1998؟', a:'فرنسا', w:['البرازيل','إيطاليا','ألمانيا']},
+  {q:'من كان هداف مونديال 1958؟', a:'فونتين', w:['بيليه','بوتباس','مولر']},
+  {q:'من كان هداف مونديال 2002؟', a:'رونالدو', w:['كلوزه','ريفالدو','رونالدينيو']},
+  {q:'من كان هداف مونديال 2010؟', a:'توماس مولر', w:['فيا','سنيدر','فورلان']},
+  {q:'من كان هداف مونديال 2006؟', a:'كلوزه', w:['هنري','رونالدو','توتي']},
+  {q:'ما هو المنتخب الأكثر مشاركة في كأس العالم؟', a:'البرازيل', w:['ألمانيا','إيطاليا','الأرجنتين']},
+  {q:'ما هو المنتخب الأكثر فوزاً بكأس العالم؟', a:'البرازيل', w:['ألمانيا','إيطاليا','الأرجنتين']},
+  {q:'من فاز بكأس العالم 2002؟', a:'البرازيل', w:['ألمانيا','تركيا','كوريا']},
+  {q:'من فاز بكأس العالم 2010؟', a:'إسبانيا', w:['هولندا','ألمانيا','أوروغواي']},
+  {q:'من فاز بكأس العالم 2018؟', a:'فرنسا', w:['كرواتيا','بلجيكا','إنجلترا']},
+  {q:'من كان هداف مونديال 1998؟', a:'شوكر', w:['رونالدو','بيتي','زيدان']},
+  {q:'من كان هداف مونديال 1994؟', a:'سالينكو', w:['روماريو','باجيو','ستويتشكوف']},
+  {q:'من كان هداف مونديال 1990؟', a:'سكيلاتشي', w:['مارادونا','كلينسمان','ماتيوس']},
+  {q:'من كان هداف مونديال 1986؟', a:'لينيكر', w:['مارادونا','بوخفالد','بلاتيني']},
+  {q:'من سجل ثلاثية في نهائي كأس العالم 2022؟', a:'مبابي', w:['ميسي','دي ماريا','غريزمان']},
+  {q:'من فاز بأول كأس أمم أفريقيا؟', a:'مصر', w:['السودان','إثيوبيا','غانا']},
+  {q:'ما هو المنتخب الأكثر فوزاً بكأس أمم أفريقيا؟', a:'مصر', w:['الكاميرون','غانا','نيجيريا']},
+  {q:'كم مرة فازت مصر بكأس أمم أفريقيا؟', a:'7', w:['5','6','8']},
+  {q:'من فاز بكأس أمم أفريقيا 2019؟', a:'الجزائر', w:['السنغال','نيجيريا','مصر']},
+  {q:'من فاز بكأس أمم أفريقيا 2021؟', a:'السنغال', w:['مصر','الجزائر','الكاميرون']},
+  {q:'من فاز بكأس أمم أفريقيا 2023؟', a:'ساحل العاج', w:['نيجيريا','مصر','السنغال']},
+  {q:'من فاز ببطولة يورو 2024؟', a:'إسبانيا', w:['إنجلترا','فرنسا','ألمانيا']},
+  {q:'من فاز ببطولة يورو 2020؟', a:'إيطاليا', w:['إنجلترا','إسبانيا','فرنسا']},
+  {q:'من فاز ببطولة يورو 2016؟', a:'البرتغال', w:['فرنسا','ألمانيا','إسبانيا']},
+  {q:'ما هو المنتخب الأكثر فوزاً بكوبا أمريكا؟', a:'أوروغواي', w:['الأرجنتين','البرازيل','تشيلي']},
+  {q:'من فاز بكوبا أمريكا 2024؟', a:'الأرجنتين', w:['أوروغواي','كولومبيا','البرازيل']},
+  {q:'من فاز بكوبا أمريكا 2021؟', a:'الأرجنتين', w:['البرازيل','كولومبيا','أوروغواي']},
+  {q:'من فاز بدوري أبطال أوروبا 2024؟', a:'ريال مدريد', w:['دورتموند','بايرن','سيتي']},
+  {q:'من فاز بدوري أبطال أوروبا 2023؟', a:'مان سيتي', w:['إنتر','ريال','بايرن']},
+  {q:'من فاز بدوري أبطال أوروبا 2021؟', a:'تشيلسي', w:['سيتي','ريال','بايرن']},
+  {q:'من فاز بدوري أبطال أوروبا 2020؟', a:'بايرن', w:['باريس','ريال','ليفربول']},
+  {q:'من درّب برشلونة عام 2009؟', a:'غوارديولا', w:['إنريكي','فالفيردي','ريجيكامب']},
+  {q:'ما هو ملعب ريال مدريد؟', a:'سانتياغو برنابيو', w:['كامب نو','أنفيلد','أليانز']},
+  {q:'ما هو ملعب برشلونة؟', a:'كامب نو', w:['برنابيو','سان سيرو','أولد ترافورد']},
+  {q:'ما هو ملعب ليفربول؟', a:'أنفيلد', w:['غوديسون','الاتحاد','سان سيرو']},
+  {q:'ما هو ملعب مان يونايتد؟', a:'أولد ترافورد', w:['الاتحاد','أنفيلد','سان سيرو']},
+  {q:'ما هو ملعب بايرن ميونخ؟', a:'أليانز أرينا', w:['سيجنال إيدونا','برنابيو','سان سيرو']},
+  {q:'ما هو ملعب ميلان؟', a:'سان سيرو', w:['أليانز','البرنابيو','كامب نو']},
+  {q:'ما هو ملعب النادي الأهلي؟', a:'القاهرة الدولي', w:['السلام','برج العرب','الدفاع الجوي']},
+  {q:'كم لاعباً في فريق كرة القدم؟', a:'11', w:['10','12','9']},
+  {q:'كم مدة مباراة كرة القدم؟', a:'90 دقيقة', w:['80','100','120']},
+  {q:'كم عدد أشواط مباراة كرة القدم؟', a:'2', w:['1','3','4']},
+  {q:'متى يُحتسب التسلل في كرة القدم؟', a:'عند تمركز اللاعب خلف آخر مدافع', w:['عند اللمس','دائماً','عند الركل']},
+  {q:'في أي دولة أُقيم أول مونديال عام 1930؟', a:'أوروغواي', w:['البرازيل','الأرجنتين','إيطاليا']},
+  {q:'ما هي الدولة الأكثر استضافة لكأس العالم؟', a:'المكسيك', w:['البرازيل','ألمانيا','إيطاليا']},
+  {q:'من هو أول لاعب يرفع كأس العالم 3 مرات؟', a:'بيليه', w:['مارادونا','زيدان','كافو']},
+  {q:'من هو اللاعب الأكثر مشاركة في كأس العالم؟', a:'ميسي', w:['رونالدو','كلوزه','بوفون']},
+  {q:'من فاز بدوري أبطال أوروبا 2005 بعد ريمونتادا؟', a:'ليفربول', w:['ميلان','ريال','يوفي']},
+  {q:'من فاز بدوري أبطال أوروبا 1999 بريمونتادا؟', a:'مان يونايتد', w:['بايرن','ريال','برشا']},
+  {q:'من فاز بالدوري الإنجليزي 2024؟', a:'مان سيتي', w:['أرسنال','ليفربول','تشيلسي']},
+  {q:'من فاز بالدوري الإسباني 2024؟', a:'ريال مدريد', w:['برشلونة','أتلتيكو','إشبيلية']},
+  {q:'من فاز بالدوري الإيطالي 2024؟', a:'إنتر', w:['ميلان','يوفي','نابولي']},
+  {q:'من فاز بالدوري الألماني 2024؟', a:'بايرن ليفركوزن', w:['بايرن ميونخ','دورتموند','لايبزيغ']},
+  {q:'من فاز بالدوري الفرنسي 2024؟', a:'باريس سان جيرمان', w:['موناكو','مارسيليا','ليون']},
+  {q:'ما هو النادي الملقب بـ"الشياطين الحمر"؟', a:'مان يونايتد', w:['ليفربول','أرسنال','تشيلسي']},
+  {q:'ما هو النادي الملقب بـ"البلوغرانا"؟', a:'برشلونة', w:['ريال','أتلتيكو','إشبيلية']},
+  {q:'ما هو النادي الملقب بـ"الملكي"؟', a:'ريال مدريد', w:['برشلونة','بايرن','يوفي']},
+  {q:'ما هو النادي الملقب بـ"البيانكونيري"؟', a:'يوفنتوس', w:['ميلان','إنتر','روما']},
+  {q:'ما هو النادي الملقب بـ"الريدز"؟', a:'ليفربول', w:['يونايتد','أرسنال','توتنهام']},
+  {q:'من هو الهداف التاريخي للدوري الإنجليزي؟', a:'شيرر', w:['هنري','رونالدو','كول']},
+  {q:'من فاز بالكرة الذهبية 2024؟', a:'رودري', w:['فينيسيوس','بيلينغهام','كاين']},
+  {q:'من فاز بالكرة الذهبية 2023؟', a:'ميسي', w:['هالاند','مبابي','كاين']},
+  {q:'من فاز بالكرة الذهبية 2022؟', a:'بنزيما', w:['ميسي','مبابي','ليفا']},
+  {q:'من فاز بالكرة الذهبية 2018؟', a:'مودريتش', w:['رونالدو','غريزمان','مبابي']},
+  {q:'من هو اللاعب الذي سجل 91 هدفاً في سنة واحدة؟', a:'ميسي', w:['رونالدو','ليفا','مولر']},
+  {q:'من فاز بجائزة أفضل لاعب في مونديال 2022؟', a:'ميسي', w:['مبابي','مودريتش','غريزمان']},
+  {q:'من فاز بجائزة أفضل لاعب في مونديال 2018؟', a:'مودريتش', w:['غريزمان','مبابي','كاين']},
+  {q:'من فاز بجائزة أفضل لاعب في مونديال 2014؟', a:'ميسي', w:['مولر','روبين','نيمار']},
+  {q:'في أي عام فاز ليونيل ميسي بكأس العالم؟', a:'2022', w:['2018','2014','2010']},
+  {q:'في أي عام فاز كريستيانو رونالدو ببطولة يورو؟', a:'2016', w:['2012','2008','2020']},
+  {q:'في أي عام فاز رونالدينيو بالكرة الذهبية؟', a:'2005', w:['2004','2006','2007']},
+  {q:'من فاز بكأس العالم 1970؟', a:'البرازيل', w:['إيطاليا','ألمانيا','أوروغواي']},
+  {q:'من فاز بكأس العالم 1958؟', a:'البرازيل', w:['السويد','ألمانيا','فرنسا']},
+  {q:'من فاز بكأس العالم 1966؟', a:'إنجلترا', w:['ألمانيا','البرازيل','البرتغال']},
+  {q:'من فاز بكأس العالم 1934؟', a:'إيطاليا', w:['تشيكوسلوفاكيا','ألمانيا','النمسا']},
+  {q:'من فاز بكأس العالم 1938؟', a:'إيطاليا', w:['المجر','البرازيل','السويد']},
+  {q:'من فاز بكأس العالم 1954؟', a:'ألمانيا الغربية', w:['المجر','النمسا','أوروغواي']},
+  {q:'من فاز بكأس العالم 1974؟', a:'ألمانيا الغربية', w:['هولندا','البرازيل','بولندا']},
+  {q:'من فاز بكأس العالم 1978؟', a:'الأرجنتين', w:['هولندا','البرازيل','إيطاليا']},
+  {q:'من فاز بكأس العالم 1982؟', a:'إيطاليا', w:['ألمانيا الغربية','بولندا','فرنسا']},
+  {q:'من فاز بكأس العالم 1990؟', a:'ألمانيا الغربية', w:['الأرجنتين','إيطاليا','إنجلترا']},
+  {q:'من فاز بكأس العالم 1994؟', a:'البرازيل', w:['إيطاليا','السويد','بلغاريا']},
+  {q:'من فاز بكأس العالم 2006؟', a:'إيطاليا', w:['فرنسا','ألمانيا','البرتغال']},
+  {q:'من فاز ببطولة يورو 2000؟', a:'فرنسا', w:['إيطاليا','هولندا','البرتغال']},
+  {q:'من فاز ببطولة يورو 2004؟', a:'اليونان', w:['البرتغال','التشيك','هولندا']},
+  {q:'من فاز ببطولة يورو 2008؟', a:'إسبانيا', w:['ألمانيا','روسيا','تركيا']},
+  {q:'من فاز ببطولة يورو 2012؟', a:'إسبانيا', w:['إيطاليا','ألمانيا','البرتغال']},
+  {q:'من فاز بكأس آسيا 2023؟', a:'قطر', w:['الأردن','كوريا','اليابان']},
+  {q:'من فاز بكأس آسيا 2019؟', a:'قطر', w:['اليابان','إيران','كوريا']}
+];
+
+const BANK_BASKETBALL = [
+  {q:'كم لاعباً في فريق كرة السلة؟', a:'5', w:['4','6','7']},
+  {q:'كم نقطة للرمية الحرة؟', a:'1', w:['2','3','4']},
+  {q:'كم نقطة للرمية خلف القوس؟', a:'3', w:['1','2','4']},
+  {q:'ما اسم الدوري الأمريكي للمحترفين؟', a:'NBA', w:['NFL','MLB','NHL']},
+  {q:'ما أكثر فريق فوزاً بلقب NBA؟', a:'بوسطن سلتكس', w:['ليكرز','بولز','واريورز']},
+  {q:'كم ثانية للهجوم في NBA؟', a:'24', w:['30','20','14']},
+  {q:'من هو الأسطورة مايكل جوردان؟', a:'لاعب كرة سلة', w:['لاعب كرة قدم','ملاكم','تنس']},
+  {q:'كم مرة فاز مايكل جوردان بلقب NBA؟', a:'6', w:['5','4','7']},
+  {q:'ما هو النادي الأشهر في لوس أنجلوس؟', a:'ليكرز', w:['كليبرز','واريورز','سلتكس']},
+  {q:'ما ارتفاع سلة كرة السلة؟', a:'3.05 متر', w:['2.5 متر','3.5 متر','2.8 متر']},
+  {q:'كم ربعاً في مباراة NBA؟', a:'4', w:['2','3','5']},
+  {q:'كم مدة الربع في NBA؟', a:'12 دقيقة', w:['10 دقائق','15 دقيقة','8 دقائق']},
+  {q:'كم مدة الربع دولياً (FIBA)؟', a:'10 دقائق', w:['12 دقيقة','8 دقائق','15 دقيقة']},
+  {q:'ما لون الكرة في كرة السلة الرسمي؟', a:'برتقالي', w:['أحمر','أصفر','بني']},
+  {q:'من اخترع كرة السلة؟', a:'جيمس نايسميث', w:['نايسميث','غوليك','أوزبورن']},
+  {q:'في أي عام اخترعت كرة السلة؟', a:'1891', w:['1901','1881','1911']},
+  {q:'كم فريقاً في دوري NBA؟', a:'30', w:['28','32','25']},
+  {q:'من فاز بلقب NBA 2024؟', a:'بوسطن سلتكس', w:['دالاس','ميامي','غولدن ستايت']},
+  {q:'من فاز بلقب NBA 2023؟', a:'دنفر ناغتس', w:['ميامي','بوسطن','ليكرز']},
+  {q:'أي منتخب يهيمن على كرة السلة عالمياً؟', a:'أمريكا', w:['إسبانيا','فرنسا','صربيا']},
+  {q:'ما اسم منتخب أمريكا الشهير لكرة السلة؟', a:'دريم تيم', w:['سوبر تيم','إيغلز','ليونز']},
+  {q:'كم مرة فاز فريق ليكرز بلقب NBA؟', a:'17', w:['16','15','18']},
+  {q:'كم مرة فاز فريق سلتكس بلقب NBA؟', a:'18', w:['17','16','19']},
+  {q:'كم مرة فاز كوبي براينت بلقب NBA؟', a:'5', w:['4','6','3']},
+  {q:'كم مرة فاز ليبرون جيمس بلقب NBA؟', a:'4', w:['3','5','6']},
+  {q:'ما هو "تريبول دوبل" في كرة السلة؟', a:'10+ في 3 إحصائيات', w:['30 نقطة','20 ريباوند','5 تمريرات']},
+  {q:'كم مرة فاز فريق واريورز بلقب NBA؟', a:'7', w:['5','6','8']},
+  {q:'من صاحب أعلى معدل نقاط في مباراة NBA؟', a:'ويلت تشامبرلين', w:['كوبي','جوردان','ليبرون']}
+];
+
+const BANK_HANDBALL = [
+  {q:'كم لاعباً في فريق كرة اليد؟', a:'7', w:['6','8','5']},
+  {q:'كم مدة مباراة كرة اليد؟', a:'60 دقيقة', w:['90','45','75']},
+  {q:'كم شوطاً في كرة اليد؟', a:'2', w:['1','3','4']},
+  {q:'كم مدة الشوط الواحد في كرة اليد؟', a:'30 دقيقة', w:['45','20','25']},
+  {q:'كم خطوة يمكن للاعب المشي بالكرة؟', a:'3', w:['2','4','5']},
+  {q:'كم لاعباً حارس مرمى في الفريق؟', a:'1', w:['2','0','3']},
+  {q:'كم ثانية للهجوم في كرة اليد؟', a:'30', w:['24','20','60']},
+  {q:'ما طول ملعب كرة اليد؟', a:'40 متر', w:['30','50','60']},
+  {q:'ما عرض ملعب كرة اليد؟', a:'20 متر', w:['15','25','30']},
+  {q:'من أكثر منتخب فوزاً بكأس العالم لكرة اليد؟', a:'فرنسا', w:['السويد','رومانيا','الدنمارك']},
+  {q:'من فاز بمونديال كرة اليد 2023؟', a:'الدنمارك', w:['فرنسا','السويد','إسبانيا']},
+  {q:'ما اسم البطولة الأوروبية لكرة اليد؟', a:'يورو هاندبول', w:['يورو كاب','أولمبياد','يورو ليج']},
+  {q:'من أكثر منتخب فوزاً بيورو هاندبول؟', a:'السويد', w:['فرنسا','الدنمارك','إسبانيا']},
+  {q:'كم مرة فاز منتخب مصر بأمم أفريقيا لكرة اليد؟', a:'7', w:['5','6','8']},
+  {q:'من أكثر منتخب فوزاً بأمم أفريقيا لكرة اليد؟', a:'مصر', w:['تونس','الجزائر','المغرب']},
+  {q:'من فاز بأمم أفريقيا لكرة اليد 2024؟', a:'مصر', w:['تونس','الجزائر','الرأس الأخضر']},
+  {q:'كم متراً تبعد منطقة المرمى عن المرمى؟', a:'6 أمتار', w:['5','7','9']},
+  {q:'ما هي عقوبة اللاعب عند ارتكاب 3 أخطاء؟', a:'إيقاف دقيقتين', w:['طرد','إنذار','خصم نقطة']},
+  {q:'كم متراً طول مرمى كرة اليد؟', a:'3 أمتار', w:['2','4','5']},
+  {q:'ما ارتفاع مرمى كرة اليد؟', a:'متران', w:['1.5','2.5','3']}
+];
+
+const BANK_WRESTLING = [
+  {q:'ما نوع المصارعة الأولمبية الأقدم؟', a:'اليونانية الرومانية', w:['الحرة','السومو','المحترفة']},
+  {q:'في أي عام دخلت المصارعة الألعاب الأولمبية؟', a:'1896', w:['1900','1892','1904']},
+  {q:'ما هي مدة مباراة المصارعة؟', a:'6 دقائق', w:['3','5','8']},
+  {q:'ما هي أهم بطولة مصارعة؟', a:'العالم', w:['أولمبياد','يورو','آسيا']},
+  {q:'من أشهر مصارع أمريكي؟', a:'هالك هوجان', w:['ذا روك','جون سينا','أندرتيكر']},
+  {q:'ما هي المصارعة الشعبية اليابانية؟', a:'السومو', w:['الجودو','الكاراتيه','الكيندو']},
+  {q:'في أي عام أُضيفت مصارعة السيدات للأولمبياد؟', a:'2004', w:['2000','2008','2012']},
+  {q:'كم ميدالية ذهبية أولمبية فاز ألكسندر كاريلين؟', a:'3', w:['2','4','5']}
+];
+
+const BANK_KARATE = [
+  {q:'ما أصل رياضة الكاراتيه؟', a:'اليابان', w:['الصين','كوريا','تايلاند']},
+  {q:'ماذا تعني كلمة "كاراتيه"؟', a:'اليد الفارغة', w:['القتال','الدفاع','السيف']},
+  {q:'ما هي أشهر أساليب الكاراتيه؟', a:'شوتوكان', w:['جودو','أيكيدو','تايكوندو']},
+  {q:'في أي عام دخلت الكاراتيه الأولمبياد؟', a:'2020', w:['2016','2012','2008']},
+  {q:'ما هو أعلى حزام في الكاراتيه؟', a:'الأسود', w:['الأحمر','الأبيض','الأخضر']},
+  {q:'من مؤسس الكاراتيه الحديث؟', a:'فوناكوشي', w:['أويتا','ناكاياما','نيشياما']},
+  {q:'ماذا يعني "كاتا"؟', a:'شكل/حركات', w:['قتال','هجوم','دفاع']},
+  {q:'ماذا يعني "كوميتيه"؟', a:'قتال/مواجهة', w:['شكل','تدريب','وقفة']},
+  {q:'كم لاعباً في مباراة الكاراتيه؟', a:'لاعبان', w:['1','3','4']},
+  {q:'مدة مباراة الكاراتيه الأولمبية؟', a:'3 دقائق', w:['2','5','6']},
+  {q:'ما اسم الملعب الذي تُقام فيه الكاراتيه؟', a:'الدوجو', w:['الحلبة','الطاتامي','الملعب']}
+];
+
+const BANK_TENNIS = [
+  {q:'ما هي أشهر بطولة تنس في العالم؟', a:'ويمبلدون', w:['رولان غاروس','أمريكا المفتوحة','أستراليا المفتوحة']},
+  {q:'ما اسم البطولات الأربع الكبرى في التنس؟', a:'غراند سلام', w:['ماسترز','أولمبياد','ديفيز']},
+  {q:'على أي أرض تُلعب ويمبلدون؟', a:'العشب', w:['الترابي','الصلب','السجاد']},
+  {q:'على أي أرض تُلعب رولان غاروس؟', a:'الترابي', w:['العشب','الصلب','السجاد']},
+  {q:'كم مرة فاز روجر فيدرر بويمبلدون؟', a:'8', w:['7','9','6']},
+  {q:'من أكثر لاعب فوزاً بغراند سلام في التاريخ (رجال)؟', a:'دجوكوفيتش', w:['فيدرر','نادال','سامبيراس']},
+  {q:'كم مرة فاز نادال برولان غاروس؟', a:'14', w:['12','13','15']},
+  {q:'كم مرة فاز سيرينا وليامز بغراند سلام؟', a:'23', w:['20','22','24']},
+  {q:'ما عدد اللاعبين في فريق التنس الزوجي؟', a:'2', w:['1','3','4']},
+  {q:'كيف تُحتسب النقطة الأولى في المباراة؟', a:'15', w:['10','20','5']},
+  {q:'ماذا يعني "ديوس"؟', a:'تعادل 40-40', w:['فوز','خسارة','إرسال']},
+  {q:'من هو "الملك روجر" في التنس؟', a:'فيدرر', w:['نادال','دجوكوفيتش','موراي']},
+  {q:'من هو "ملك الترابي" في التنس؟', a:'نادال', w:['فيدرر','دجوكوفيتش','ثيم']},
+  {q:'كم مرة فاز فيدرر ببطولات غراند سلام؟', a:'20', w:['18','19','21']},
+  {q:'كم مرة فاز نادال ببطولات غراند سلام؟', a:'22', w:['20','21','23']},
+  {q:'كم مرة فاز دجوكوفيتش ببطولات غراند سلام؟', a:'24', w:['22','23','25']},
+  {q:'ما هو "تاي بريك" في التنس؟', a:'شوط فاصل', w:['إعادة إرسال','خطأ','فوز']},
+  {q:'ما هي بطولة كأس ديفيز؟', a:'بطولة منتخبات', w:['بطولة أندية','بطولة فردية','بطولة سيدات']}
+];
+
+const BANK_TT = [
+  {q:'ما اسم كرة الطاولة بالإنجليزية؟', a:'بينغ بونغ', w:['تنس','سكواش','بادمنتون']},
+  {q:'كم لاعباً في فردي كرة الطاولة؟', a:'2', w:['1','3','4']},
+  {q:'كم نقطة لرمية الفوز في شوط؟', a:'11', w:['15','21','7']},
+  {q:'كم شوطاً في المباراة؟', a:'7', w:['5','3','9']},
+  {q:'بكم نقطة يجب أن يفوز اللاعب بفارق؟', a:'2', w:['1','3','4']},
+  {q:'من يهيمن على كرة الطاولة عالمياً؟', a:'الصين', w:['اليابان','ألمانيا','كوريا']},
+  {q:'ما لون الكرة الرسمي لكرة الطاولة؟', a:'أبيض أو برتقالي', w:['أصفر','أحمر','أخضر']},
+  {q:'ما قطر كرة الطاولة؟', a:'40 مم', w:['30','50','60']},
+  {q:'متى دخلت كرة الطاولة الأولمبياد؟', a:'1988', w:['1980','1992','1996']},
+  {q:'ما اسم ضربة البداية في كرة الطاولة؟', a:'الإرسال', w:['الصد','اللكمة','الرفعة']}
+];
+
+/* ================================================================
+   SAVE / STATE
+   ================================================================ */
+const SAVE_KEY = 'jumjum_v4';
+let save = { 
+  profile:null, progress:{}, attempts:{}, seen:{}, 
+  stats:{totalStars:0,totalGames:0,bestStreak:0,totalLevels:0}, 
+  settings:{sound:true,speech:true,music:true,speechRate:0.9} 
+};
+try { const r = localStorage.getItem(SAVE_KEY); if(r) save = Object.assign(save, JSON.parse(r)); } catch(e){}
+function persist(){ try{ localStorage.setItem(SAVE_KEY, JSON.stringify(save)); } catch(e){} }
+
+const state = {
+  currentGame:'quiz', currentCategory:null, currentCategoryName:'', currentCategoryColor:'#fbbf24', currentCategoryIcon:'fa-circle-question',
+  currentLevel:1, questions:[], idx:0, score:0, correct:0, streak:0, bestStreak:0,
+  hearts:3, maxHearts:3, timeLeft:30, timeLimit:30, timerId:null,
+  answered:false, powerups:{fifty:1,freeze:1,skip:1}, frozen:false, startTime:0,
+  regStep:1, regName:'', regAge:null, regAvatar:null
+};
+
+/* ================================================================
+   SPEECH
+   ================================================================ */
+let voices = [];
+function loadVoices(){ voices = window.speechSynthesis?.getVoices() || []; }
+if('speechSynthesis' in window){ loadVoices(); window.speechSynthesis.onvoiceschanged = loadVoices; }
+function speak(text, rate){
+  if(!save.settings.speech) return;
+  if(!('speechSynthesis' in window)) return;
+  try {
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = 'ar-SA'; u.rate = rate || save.settings.speechRate || 0.9; u.pitch = 1.1;
+    const arVoice = voices.find(v => v.lang && v.lang.startsWith('ar'));
+    if(arVoice) u.voice = arVoice;
+    window.speechSynthesis.speak(u);
+  } catch(e){}
+}
+function stopSpeech(){ try{ window.speechSynthesis?.cancel(); } catch(e){} }
+
+/* ================================================================
+   SOUND
+   ================================================================ */
+let audioCtx = null;
+function tone(freq, dur, type='sine', vol=.05){
+  if(!save.settings.sound) return;
+  try {
+    if(!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    if(audioCtx.state === 'suspended') audioCtx.resume();
+    const o = audioCtx.createOscillator(), g = audioCtx.createGain();
+    o.type = type; o.frequency.value = freq;
+    g.gain.setValueAtTime(vol, audioCtx.currentTime);
+    g.gain.exponentialRampToValueAtTime(.0001, audioCtx.currentTime + dur);
+    o.connect(g); g.connect(audioCtx.destination);
+    o.start(); o.stop(audioCtx.currentTime + dur);
+  } catch(e){}
+}
+const sfxOk = () => { tone(880,.12); setTimeout(()=>tone(1320,.16),90); };
+const sfxNo = () => tone(220,.22,'sawtooth',.05);
+const sfxTap = () => tone(660,.05,'square',.03);
+const sfxWin = () => [523,659,784,1047].forEach((f,i)=>setTimeout(()=>tone(f,.2,'sine',.055), i*110));
+
+/* ================================================================
+   BGM (Background Music - Calm Chords)
+   ================================================================ */
+let bgmCtx = null, bgmGain = null, bgmTimer = null, bgmPlaying = false;
+
+function startBGM() {
+  if (bgmPlaying || !save.settings.music || !save.settings.sound) return;
+  try {
+    bgmCtx = new (window.AudioContext || window.webkitAudioContext)();
+    bgmGain = bgmCtx.createGain();
+    bgmGain.gain.value = 0.015;
+    bgmGain.connect(bgmCtx.destination);
+    
+    const chords = [
+      [261.63, 329.63, 392.00],
+      [220.00, 261.63, 329.63],
+      [174.61, 220.00, 261.63],
+      [196.00, 246.94, 293.66]
+    ];
+    let idx = 0;
+    
+    function playChord() {
+      if (!bgmCtx || !bgmGain) return;
+      const now = bgmCtx.currentTime;
+      const chord = chords[idx % chords.length];
+      chord.forEach(freq => {
+        const osc = bgmCtx.createOscillator();
+        const gain = bgmCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.value = freq;
+        gain.gain.setValueAtTime(0, now);
+        gain.gain.linearRampToValueAtTime(0.1, now + 1.5);
+        gain.gain.linearRampToValueAtTime(0, now + 4);
+        osc.connect(gain);
+        gain.connect(bgmGain);
+        osc.start(now);
+        osc.stop(now + 4.5);
+      });
+      idx++;
+    }
+    
+    playChord();
+    bgmTimer = setInterval(playChord, 4000);
+    bgmPlaying = true;
+  } catch(e) { console.log('BGM error', e); }
+}
+
+function stopBGM() {
+  if (bgmTimer) { clearInterval(bgmTimer); bgmTimer = null; }
+  if (bgmCtx) { try { bgmCtx.close(); } catch(e){} bgmCtx = null; bgmGain = null; }
+  bgmPlaying = false;
+}
+
+/* ================================================================
+   SEEN QUESTIONS
+   ================================================================ */
+const SEEN_TTL = 48 * 60 * 60 * 1000;
+function hashQ(q){ let h=0; const s = q.q + '|' + q.a; for(let i=0;i<s.length;i++){ h = ((h<<5)-h+s.charCodeAt(i))|0; } return 'q'+h; }
+function isSeen(q){ const t = save.seen[hashQ(q)]; return t && (Date.now()-t)<SEEN_TTL; }
+function markSeen(q){ save.seen[hashQ(q)] = Date.now(); }
+function filterSeen(bank){
+  const fresh = bank.filter(q => !isSeen(q));
+  if(fresh.length < 15) return bank;
+  return fresh;
+}
+
+/* ================================================================
+   ATTEMPTS
+   ================================================================ */
+const LOCK_DURATION = 10 * 60 * 1000;
+function getAttempts(game){
+  if(!save.attempts[game]) save.attempts[game] = {count:3, lockUntil:0};
+  const a = save.attempts[game];
+  if(a.lockUntil && Date.now() > a.lockUntil){ a.count = 3; a.lockUntil = 0; }
+  return a;
+}
+function useAttempt(game){
+  const a = getAttempts(game);
+  if(a.count <= 0){ if(!a.lockUntil) a.lockUntil = Date.now() + LOCK_DURATION; persist(); return false; }
+  a.count--;
+  if(a.count <= 0) a.lockUntil = Date.now() + LOCK_DURATION;
+  persist();
+  return true;
+}
+function addAttempts(game, n=2){
+  const a = getAttempts(game);
+  a.count = Math.min(5, a.count + n);
+  if(a.count > 0) a.lockUntil = 0;
+  persist();
+}
+
+/* ================================================================
+   SCREEN MGMT + UI HELPERS
+   ================================================================ */
+function showScreen(id){
+  $$('.screen').forEach(s => s.classList.toggle('active', s.id === id));
+  const noTabScreens = ['scr-splash','scr-quiz','scr-result'];
+  $('#tabbar').classList.toggle('hidden', noTabScreens.includes(id));
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function launchConfetti(){
+  const icons = ['fa-star','fa-trophy','fa-crown','fa-gem','fa-fire','fa-bolt'];
+  const colors = ['#fbbf24','#38bdf8','#a855f7','#f472b6','#10b981','#ec4899'];
+  for(let i=0;i<35;i++){
+    const el = document.createElement('div');
+    el.className = 'confetti';
+    el.innerHTML = `<i class="fas ${pick(icons)}" style="color:${pick(colors)}"></i>`;
+    el.style.left = Math.random()*100 + '%';
+    el.style.animationDelay = (Math.random()*0.6)+'s';
+    el.style.fontSize = (14+Math.random()*14)+'px';
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 3500);
+  }
+}
+
+function showModal(title, desc, onConfirm){
+  $('#modalTitle').textContent = title;
+  $('#modalDesc').textContent = desc;
+  $('#modal').classList.add('active');
+  $('#modalConfirm').onclick = () => { $('#modal').classList.remove('active'); onConfirm && onConfirm(); };
+  $('#modalCancel').onclick = () => { $('#modal').classList.remove('active'); };
+}
+
+/* ================================================================
+   BANK SELECTION
+   ================================================================ */
+function getBankForCategory(catId, age){
+  if(catId === 'football') return BANK_FOOTBALL;
+  if(catId === 'basketball') return BANK_BASKETBALL;
+  if(catId === 'handball') return BANK_HANDBALL;
+  if(catId === 'wrestling') return BANK_WRESTLING;
+  if(catId === 'karate') return BANK_KARATE;
+  if(catId === 'tennis') return BANK_TENNIS;
+  if(catId === 'tabletennis') return BANK_TT;
+  if(catId === 'math') return BANK_MATH;
+  if(catId === 'science') return BANK_SCIENCE;
+  if(catId === 'history' || catId === 'geo' || catId === 'general') return BANK_CULTURE;
+  if(catId === 'art') return BANK_CULTURE;
+  if(age === '3-5') return BANK_KIDS_3_5;
+  if(age === '6-8'){
+    if(catId === 'animals'){ const f = BANK_KIDS_6_8.filter(q=>/حيوان|كلب|قط|أسد|فيل|نحلة|عصفور|أرنب|حصان|بقرة|بطريق|خفاش|فهد|حوت|سلحفاة|حرباء|عنكبوت/.test(q.q)); if(f.length>=10) return f; }
+    if(catId === 'math') return BANK_KIDS_6_8.filter(q=>/ناتج|كم يساوي|مربع|جذر/.test(q.q)).concat(BANK_MATH.slice(0,15));
+    if(catId === 'science'){ const f = BANK_KIDS_6_8.filter(q=>/كوكب|جسم|قلب|رئة|معدة|دماغ|كلية|شمس|قمر|أرض|مريخ|زحل/.test(q.q)); if(f.length>=8) return f; }
+    if(catId === 'capital'){ const f = BANK_KIDS_6_8.filter(q=>/عاصمة/.test(q.q)); if(f.length>=5) return f; }
+    if(catId === 'islamic'){ const f = BANK_KIDS_6_8.filter(q=>/إسلام|مسجد|قرآن|نبي|صلاة|رمضان|هجرة|حج|محمد|أركان/.test(q.q)); if(f.length>=5) return f; }
+    if(catId === 'sports') return BANK_FOOTBALL.slice(0,30);
+    return BANK_KIDS_6_8;
+  }
+  if(age === '9-12'){
+    if(catId === 'geo'){ const f = BANK_KIDS_9_12.filter(q=>/قارة|دولة|عاصمة|نهر|جبل|صحراء|بحر|مدينة/.test(q.q)); if(f.length>=10) return f.concat(BANK_CULTURE.slice(0,20)); }
+    if(catId === 'history'){ const f = BANK_KIDS_9_12.filter(q=>/عام|ثورة|معركة|خليفة|دولة|فتح|حرب/.test(q.q)); if(f.length>=8) return f.concat(BANK_CULTURE.slice(0,15)); }
+    if(catId === 'science') return BANK_SCIENCE.slice(0,50);
+    if(catId === 'math') return BANK_MATH;
+    if(catId === 'sports') return BANK_FOOTBALL.slice(0,40);
+    return BANK_KIDS_9_12;
+  }
+  return BANK_CULTURE;
+}
+
+/* ================================================================
+   REGISTRATION
+   ================================================================ */
+function initRegistration(){
+  if(save.profile){
+    $('#inpName').value = save.profile.name || '';
+    $('#btnStepName').disabled = false;
+  }
+  buildAvatarGrid();
+  buildStep1();
+  buildStep2();
+  buildStep3();
+}
+
+function buildAvatarGrid(){
+  const grid = $('#avatarGrid');
+  grid.innerHTML = '';
+  AVATARS.forEach(a => {
+    const el = document.createElement('div');
+    el.className = 'avatar-opt';
+    el.dataset.id = a.id;
+    el.innerHTML = `
+      <img src="${a.src}" alt="${a.id}" 
+           onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+      <div class="avatar-fallback" style="display:none; background:${a.color}">
+        <i class="fas ${a.fallback}"></i>
+      </div>
+    `;
+    el.onclick = () => {
+      sfxTap();
+      $$('.avatar-opt').forEach(x => x.classList.remove('selected'));
+      el.classList.add('selected');
+      state.regAvatar = a.id;
+      $('#btnStepAvatar').disabled = false;
+    };
+    grid.appendChild(el);
+  });
+}
+
+function buildStep1(){
+  const inp = $('#inpName');
+  const btn = $('#btnStepName');
+  inp.addEventListener('input', () => { btn.disabled = inp.value.trim().length < 2; });
+  inp.addEventListener('keypress', e => { if(e.key === 'Enter' && !btn.disabled) btn.click(); });
+  btn.onclick = () => { sfxTap(); state.regName = inp.value.trim(); gotoStep(2); };
+}
+function buildStep2(){
+  $$('.age-btn').forEach(b => {
+    b.onclick = () => {
+      sfxTap();
+      $$('.age-btn').forEach(x => x.classList.remove('selected'));
+      b.classList.add('selected');
+      state.regAge = b.dataset.age;
+      $('#btnStepAge').disabled = false;
+    };
+  });
+  $('#btnStepAge').onclick = () => { sfxTap(); gotoStep(3); };
+  $$('[data-back-step]').forEach(b => {
+    b.onclick = () => { sfxTap(); gotoStep(parseInt(b.dataset.backStep)); };
+  });
+}
+function buildStep3(){
+  $('#btnStepAvatar').onclick = () => {
+    if(!state.regAvatar) return;
+    sfxOk();
+    save.profile = {
+      name: state.regName, age: state.regAge, ageGroup: state.regAge,
+      avatar: state.regAvatar, createdAt: Date.now()
+    };
+    persist();
+    setTimeout(() => speak(`أهلاً بك يا ${state.regName}، أنت الآن في عالم جمجم`), 500);
+    showScreen('scr-home');
+    renderHome();
+    startBGM();
+  };
+}
+function gotoStep(n){
+  state.regStep = n;
+  $$('.splash-step').forEach(s => s.classList.toggle('active', parseInt(s.dataset.step) === n));
+}
+
+/* ================================================================
+   HOME
+   ================================================================ */
+function renderHome(){
+  if(!save.profile) return;
+  const avatar = AVATARS.find(a => a.id === save.profile.avatar) || AVATARS[0];
+  const tbImg = $('#tbAvatar');
+  tbImg.src = avatar.src;
+  tbImg.onerror = function(){
+    this.style.display = 'none';
+    const p = this.parentElement;
+    p.style.background = avatar.color;
+    p.innerHTML = `<i class="fas ${avatar.fallback}"></i>`;
+  };
+  $('#tbName').textContent = save.profile.name;
+  $('#tbAge').textContent = AGE_LABELS[save.profile.ageGroup] || save.profile.age;
+  
+  $('#statStars').textContent = save.stats.totalStars || 0;
+  $('#statStreak').textContent = save.stats.bestStreak || 0;
+  $('#statGames').textContent = save.stats.totalGames || 0;
+  $('#statLevels').textContent = save.stats.totalLevels || 0;
+  
+  // Update sound buttons
+  $('#btnVoice').innerHTML = save.settings.sound ? '<i class="fas fa-volume-high"></i>' : '<i class="fas fa-volume-xmark"></i>';
+  $('#btnVoice').classList.toggle('muted', !save.settings.sound);
+  $('#btnBgmToggle').innerHTML = save.settings.music ? '<i class="fas fa-music"></i>' : '<i class="fas fa-volume-xmark"></i>';
+  
+  updateAttemptsDisplay();
+  renderGamesGrid();
+}
+
+function updateAttemptsDisplay(){
+  const a = getAttempts(state.currentGame);
+  $('#attCount').textContent = a.count;
+  if(a.lockUntil && a.lockUntil > Date.now()){
+    const left = Math.ceil((a.lockUntil - Date.now()) / 1000);
+    const m = Math.floor(left/60), s = left%60;
+    $('#attTimer').textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+    $('#attTimerIcon').style.color = '#ef4444';
+  } else {
+    $('#attTimer').textContent = '';
+    $('#attTimerIcon').style.color = 'var(--dim)';
+  }
+}
+
+function renderGamesGrid(){
+  const grid = $('#gamesGrid');
+  grid.innerHTML = '';
+  const GAMES = [
+    {id:'quiz', name:'أسئلة وأجوبة', icon:'fa-circle-question', color:'#10b981', desc:'اختبر معلوماتك في الرياضة، التاريخ، العلوم، والجغرافيا'},
+    {id:'puzzles', name:'ألغاز وفوازير', icon:'fa-puzzle-piece', color:'#fbbf24', desc:'ألغاز منطقية، فوازير شعبية، وتحديات ذهنية ممتعة'},
+    {id:'brain', name:'لعبة الذكاء', icon:'fa-brain', color:'#38bdf8', desc:'تحدي الذاكرة والسرعة · كرر التسلسل بالترتيب'},
+    {id:'crossword', name:'كلمات متقاطعة', icon:'fa-table-cells', color:'#ec4899', desc:'اكتب الكلمات الناقصة بناءً على التلميح'},
+    {id:'matching', name:'توصيلات', icon:'fa-link', color:'#a855f7', desc:'صِل كل دولة بعاصمتها في أسرع وقت'},
+    {id:'interactive', name:'تفاعل', icon:'fa-hand-pointer', color:'#ef4444', desc:'اختبر سرعة رد فعلك · اضغط عند اللون الأخضر'}
+  ];
+  GAMES.forEach(g => {
+    const card = document.createElement('button');
+    card.className = 'mode-card';
+    card.style.setProperty('--c', g.color);
+    card.innerHTML = `
+      <div class="mode-icon"><i class="fas ${g.icon}"></i></div>
+      <div class="mode-info">
+        <div class="mode-title">${g.name}</div>
+        <div class="mode-desc">${g.desc}</div>
+      </div>
+      <i class="fas fa-chevron-left mode-arrow"></i>
+    `;
+    card.onclick = () => {
+      sfxTap();
+      if(g.id === 'brain') { startBrainGame(); return; }
+      if(g.id === 'interactive') { startInteractiveGame(); return; }
+      if(g.id === 'matching') { startMatchingGame(); return; }
+      if(g.id === 'crossword') { startCrosswordGame(); return; }
+      state.currentGame = g.id;
+      openCategoryHub(g.id);
+    };
+    grid.appendChild(card);
+  });
+}
+
+/* ================================================================
+   HUB + LEVELS
+   ================================================================ */
+function openCategoryHub(gameId){
+  state.currentGame = gameId;
+  state.currentCategory = null;
+  const cats = getAgeCategories(save.profile.ageGroup);
+  const title = gameId === 'quiz' ? 'أسئلة وأجوبة' : (gameId === 'puzzles' ? 'ألغاز وفوازير' : 'الاختبار');
+  $('#hubTitle').textContent = title;
+  
+  const content = $('#hubContent');
+  content.innerHTML = '';
+  const grid = document.createElement('div');
+  grid.className = 'cats-grid';
+  
+  cats.forEach(c => {
+    const prog = save.progress[gameId]?.[c.id];
+    const unlocked = prog?.unlocked || 1;
+    const maxLevels = AGE_MAX_LEVELS[save.profile.ageGroup] || 15;
+    const pct = Math.min(100, unlocked/maxLevels*100);
+    const card = document.createElement('button');
+    card.className = 'cat-card';
+    card.style.setProperty('--c', c.color);
+    card.innerHTML = `
+      <span class="cat-icon"><i class="fas ${c.icon}"></i></span>
+      <div class="cat-name">${c.name}</div>
+      <div class="cat-sub">${maxLevels} مرحلة</div>
+      <div class="cat-prog"><i style="width:${pct}%"></i></div>
+    `;
+    card.onclick = () => {
+      sfxTap();
+      state.currentCategory = c.id;
+      state.currentCategoryName = c.name;
+      state.currentCategoryColor = c.color;
+      state.currentCategoryIcon = c.icon;
+      renderLevels();
+      showScreen('scr-levels');
+    };
+    grid.appendChild(card);
+  });
+  content.appendChild(grid);
+  showScreen('scr-hub');
+}
+
+function renderLevels(){
+  const gameId = state.currentGame;
+  const catId = state.currentCategory;
+  const maxLevels = AGE_MAX_LEVELS[save.profile.ageGroup] || 15;
+  
+  $('#levelsTitle').textContent = state.currentCategoryName;
+  
+  const grid = $('#levelsGrid');
+  grid.innerHTML = '';
+  if(!save.progress[gameId]) save.progress[gameId] = {};
+  if(!save.progress[gameId][catId]) save.progress[gameId][catId] = {unlocked:1, best:{}, stars:{}};
+  const prog = save.progress[gameId][catId];
+  
+  for(let i=1; i<=maxLevels; i++){
+    const locked = i > (prog.unlocked || 1);
+    const best = prog.best[i] || 0;
+    const stars = prog.stars[i] || 0;
+    const diff = i<=3?'سهل':i<=8?'متوسط':i<=15?'صعب':i<=22?'صعب+':'أسطوري';
+    const card = document.createElement('div');
+    card.className = 'level-card' + (locked ? ' locked' : '');
+    card.innerHTML = `
+      <div class="level-num ${locked?'locked':''}">
+        ${locked ? '<i class="fas fa-lock"></i>' : i}
+      </div>
+      <div class="level-title">المرحلة ${i}</div>
+      <div class="level-diff">${diff}</div>
+      <div class="level-best">${best ? '<i class="fas fa-star"></i> ' + best : '—'}</div>
+      ${stars ? `<div class="level-stars">${'<i class="fas fa-star"></i>'.repeat(stars)}</div>` : ''}
+    `;
+    if(!locked) card.onclick = () => { sfxTap(); startQuiz(i); };
+    grid.appendChild(card);
+  }
+  persist();
+  showScreen('scr-levels');
+}
+
+/* ================================================================
+   QUIZ
+   ================================================================ */
+function calcQuestionCount(level, maxLevels){
+  const ratio = (level - 1) / Math.max(1, maxLevels - 1);
+  return Math.round(15 + ratio * 15);
+}
+function calcHearts(level, maxLevels){
+  const ratio = (level - 1) / Math.max(1, maxLevels - 1);
+  if(ratio < 0.4) return 3;
+  if(ratio < 0.75) return 2;
+  return 1;
+}
+function calcPowerups(level, maxLevels){
+  const ratio = (level - 1) / Math.max(1, maxLevels - 1);
+  if(ratio < 0.4) return {fifty:1, freeze:1, skip:1};
+  if(ratio < 0.75) return {fifty:1, freeze:1, skip:0};
+  return {fifty:0, freeze:1, skip:0};
+}
+function calcTimeLimit(level, maxLevels){
+  const ratio = (level - 1) / Math.max(1, maxLevels - 1);
+  if(ratio < 0.3) return 35;
+  if(ratio < 0.6) return 30;
+  return 25;
+}
+
+function startQuiz(level){
+  if(!useAttempt('quiz')){ showLockout(); return; }
+  state.currentGame = 'quiz';
+  state.currentLevel = level;
+  const catId = state.currentCategory;
+  const age = save.profile.ageGroup;
+  const maxLevels = AGE_MAX_LEVELS[age] || 15;
+  
+  const bank = getBankForCategory(catId, age);
+  const filtered = filterSeen(bank);
+  const need = calcQuestionCount(level, maxLevels);
+  
+  let pool = [...filtered];
+  const qs = [];
+  const seenQ = new Set();
+  let attempts = 0;
+  while(qs.length < need && attempts < need * 10){
+    attempts++;
+    if(pool.length === 0) pool = shuffle([...bank]);
+    const item = pool.shift();
+    if(seenQ.has(item.q) && attempts < need * 5) continue;
+    seenQ.add(item.q);
+    qs.push(item);
+    markSeen(item);
+  }
+  while(qs.length < need){ qs.push(pick(bank)); }
+  persist();
+  
+  state.questions = qs;
+  state.idx = 0;
+  state.score = 0;
+  state.correct = 0;
+  state.streak = 0;
+  state.bestStreak = 0;
+  state.maxHearts = calcHearts(level, maxLevels);
+  state.hearts = state.maxHearts;
+  state.timeLimit = calcTimeLimit(level, maxLevels);
+  state.timeLeft = state.timeLimit;
+  state.powerups = calcPowerups(level, maxLevels);
+  state.startTime = Date.now();
+  state.answered = false;
+  
+  $('#qTot').textContent = need;
+  showScreen('scr-quiz');
+  renderQuizQuestion();
+}
+
+function renderQuizQuestion(){
+  if(state.idx >= state.questions.length){ finishQuiz(false); return; }
+  state.answered = false;
+  state.frozen = false;
+  const q = state.questions[state.idx];
+  
+  $('#qNum').textContent = state.idx + 1;
+  $('#qProg').style.width = (state.idx / state.questions.length * 100) + '%';
+  
+  const catIcon = state.currentCategoryIcon || 'fa-circle-question';
+  const catName = state.currentCategoryName || 'اختبار';
+  const catColor = state.currentCategoryColor || '#fbbf24';
+  $('#qCat').innerHTML = `<i class="fas ${catIcon}"></i><span>${catName}</span>`;
+  $('#qCat').style.borderColor = catColor + 'aa';
+  $('#qCat').style.color = catColor;
+  
+  const hearts = $('#qHearts');
+  hearts.innerHTML = '';
+  for(let i=0; i<state.maxHearts; i++){
+    const h = document.createElement('span');
+    h.className = 'heart' + (i < state.hearts ? ' on' : '');
+    h.innerHTML = '<i class="fas fa-heart"></i>';
+    hearts.appendChild(h);
+  }
+  
+  $('#qScore').innerHTML = `<i class="fas fa-star"></i><span>${state.score}</span>`;
+  $('#qText').textContent = q.q;
+  
+  const opts = shuffle([q.a, ...q.w.slice(0,3)]);
+  const letters = ['أ','ب','ج','د'];
+  const box = $('#qOpts');
+  box.innerHTML = '';
+  box.style.gridTemplateColumns = '';
+  opts.forEach((opt, i) => {
+    const b = document.createElement('button');
+    b.className = 'q-opt';
+    b.dataset.val = opt;
+    b.innerHTML = `<span class="ltr">${letters[i]}</span><span>${opt}</span>`;
+    b.onclick = () => answerQuiz(opt, q.a, b);
+    box.appendChild(b);
+  });
+  
+  $$('.pu').forEach(p => { p.disabled = (state.powerups[p.dataset.pu] || 0) <= 0; });
+  
+  const isKid = ['3-5','6-8'].includes(save.profile.ageGroup);
+  if(isKid || save.settings.speech){ setTimeout(() => speak(q.q), 300); }
+  
+  startQuizTimer();
+}
+
+function startQuizTimer(){
+  stopQuizTimer();
+  const fill = $('#qTimerFill');
+  const num = $('#qTimerNum');
+  const start = performance.now();
+  const limit = state.timeLimit;
+  state.timerId = setInterval(() => {
+    if(state.answered || state.frozen) return;
+    const elapsed = (performance.now() - start) / 1000;
+    const left = Math.max(0, limit - elapsed);
+    state.timeLeft = left;
+    const pct = left / limit * 100;
+    fill.style.width = pct + '%';
+    fill.style.background = pct > 50 ? 'var(--green)' : pct > 22 ? 'var(--gold)' : '#ef4444';
+    num.textContent = Math.ceil(left);
+    if(left <= 0){ handleQuizTimeout(); }
+  }, 100);
+}
+function stopQuizTimer(){
+  if(state.timerId){ clearInterval(state.timerId); state.timerId = null; }
+}
+
+function answerQuiz(selected, correct, btn){
+  if(state.answered) return;
+  state.answered = true;
+  stopQuizTimer();
+  const isRight = selected === correct;
+  
+  $$('.q-opt').forEach(el => {
+    el.classList.add('dis');
+    if(el.dataset.val === correct) el.classList.add('ok');
+    else if(el === btn) el.classList.add('no');
+  });
+  
+  if(isRight){
+    state.correct++;
+    state.streak++;
+    state.bestStreak = Math.max(state.bestStreak, state.streak);
+    const timeBonus = Math.round(state.timeLeft * 2);
+    const streakBonus = Math.min(state.streak, 10) * 10;
+    state.score += 100 + timeBonus + streakBonus;
+    sfxOk(); vibrate(30);
+    const kid = ['3-5','6-8'].includes(save.profile.ageGroup);
+    if(kid || save.settings.speech) speak(pick(['أحسنت!','رائع!','إجابة صحيحة يا بطل!','ممتاز!']));
+  } else {
+    state.streak = 0;
+    state.hearts--;
+    sfxNo(); vibrate([40,30,40]);
+    const kid = ['3-5','6-8'].includes(save.profile.ageGroup);
+    if(kid || save.settings.speech) speak('لا بأس، حاول مرة أخرى!');
+  }
+  
+  $('#qScore').innerHTML = `<i class="fas fa-star"></i><span>${state.score}</span>`;
+  const hearts = $('#qHearts');
+  hearts.innerHTML = '';
+  for(let i=0; i<state.maxHearts; i++){
+    const h = document.createElement('span');
+    h.className = 'heart' + (i < state.hearts ? ' on' : '');
+    h.innerHTML = '<i class="fas fa-heart"></i>';
+    if(i === state.hearts && !isRight) h.classList.add('lose');
+    hearts.appendChild(h);
+  }
+  
+  if(state.hearts <= 0){ setTimeout(() => finishQuiz(true), 900); return; }
+  setTimeout(() => { state.idx++; renderQuizQuestion(); }, 1100);
+}
+
+function handleQuizTimeout(){
+  if(state.answered) return;
+  state.answered = true;
+  stopQuizTimer();
+  const q = state.questions[state.idx];
+  $$('.q-opt').forEach(el => {
+    el.classList.add('dis');
+    if(el.dataset.val === q.a) el.classList.add('ok');
+  });
+  state.streak = 0;
+  state.hearts--;
+  sfxNo(); vibrate([40,30,40]);
+  const hearts = $('#qHearts');
+  hearts.innerHTML = '';
+  for(let i=0; i<state.maxHearts; i++){
+    const h = document.createElement('span');
+    h.className = 'heart' + (i < state.hearts ? ' on' : '');
+    h.innerHTML = '<i class="fas fa-heart"></i>';
+    if(i === state.hearts) h.classList.add('lose');
+    hearts.appendChild(h);
+  }
+  if(state.hearts <= 0){ setTimeout(() => finishQuiz(true), 900); return; }
+  setTimeout(() => { state.idx++; renderQuizQuestion(); }, 1000);
+}
+
+$$('.pu').forEach(btn => {
+  btn.onclick = () => {
+    if(state.answered) return;
+    const t = btn.dataset.pu;
+    if((state.powerups[t] || 0) <= 0) return;
+    state.powerups[t]--;
+    btn.disabled = true;
+    sfxTap();
+    const q = state.questions[state.idx];
+    if(t === 'fifty'){
+      const wrongs = [];
+      $$('.q-opt').forEach(el => { if(el.dataset.val !== q.a) wrongs.push(el); });
+      shuffle(wrongs).slice(0,2).forEach(el => el.classList.add('gone'));
+    } else if(t === 'freeze'){
+      state.frozen = true;
+      setTimeout(() => { state.frozen = false; }, 10000);
+    } else if(t === 'skip'){
+      state.answered = true;
+      stopQuizTimer();
+      state.idx++;
+      setTimeout(renderQuizQuestion, 300);
+    }
+  };
+});
+
+function finishQuiz(lost){
+  stopQuizTimer(); stopSpeech();
+  const answered = Math.min(state.idx + 1, state.questions.length);
+  const acc = answered > 0 ? Math.round(state.correct / answered * 100) : 0;
+  const seconds = Math.round((Date.now() - state.startTime) / 1000);
+  
+  let stars = 0;
+  if(!lost && state.hearts > 0){
+    if(acc >= 90) stars = 3;
+    else if(acc >= 70) stars = 2;
+    else if(acc >= 50) stars = 1;
+  }
+  
+  $('#resStars').innerHTML = [1,2,3].map(i =>
+    `<i class="${i<=stars?'fas':'far'} fa-star" style="animation-delay:${i*0.12}s;color:${i<=stars?'var(--gold)':'rgba(255,255,255,.15)'}"></i>`
+  ).join('');
+  
+  $('#resTitle').textContent = lost ? 'انتهت القلوب! 💔' :
+    acc >= 90 ? 'عبقري! 🏆' : acc >= 70 ? 'أداء رائع! 🎯' : acc >= 50 ? 'جيد، واصل! 💪' : 'تحتاج تدريب 📚';
+  $('#resScore').textContent = state.score;
+  $('#resCorrect').textContent = state.correct + '/' + answered;
+  $('#resAcc').textContent = acc + '%';
+  $('#resStreak').textContent = state.bestStreak;
+  $('#resTime').textContent = seconds;
+  
+  if(!save.stats) save.stats = {totalStars:0,totalGames:0,bestStreak:0,totalLevels:0};
+  save.stats.totalStars += stars;
+  save.stats.totalGames++;
+  save.stats.totalLevels++;
+  if(state.bestStreak > save.stats.bestStreak) save.stats.bestStreak = state.bestStreak;
+  
+  const gameId = state.currentGame;
+  const catId = state.currentCategory;
+  if(!save.progress[gameId]) save.progress[gameId] = {};
+  if(!save.progress[gameId][catId]) save.progress[gameId][catId] = {unlocked:1, best:{}, stars:{}};
+  const prog = save.progress[gameId][catId];
+  
+  if(!lost){
+    const prevBest = prog.best[state.currentLevel] || 0;
+    if(state.score > prevBest) prog.best[state.currentLevel] = state.score;
+    const prevStars = prog.stars[state.currentLevel] || 0;
+    if(stars > prevStars) prog.stars[state.currentLevel] = stars;
+    const maxLvl = AGE_MAX_LEVELS[save.profile.ageGroup] || 15;
+    if(acc >= 60 && state.currentLevel >= (prog.unlocked || 1) && state.currentLevel < maxLvl){
+      prog.unlocked = state.currentLevel + 1;
+    }
+    addAttempts('quiz', 2);
+  }
+  persist();
+  
+  const nextBtn = $('#btnNextLevel');
+  const maxLvl = AGE_MAX_LEVELS[save.profile.ageGroup] || 15;
+  if(lost || acc < 60 || state.currentLevel >= maxLvl){
+    nextBtn.style.display = 'none';
+  } else {
+    nextBtn.style.display = 'flex';
+  }
+  
+  if(stars >= 2){ sfxWin(); launchConfetti(); }
+  if(save.settings.speech){
+    setTimeout(() => speak(acc >= 70 ? 'أحسنت يا بطل! نتيجة رائعة' : 'محاولة جيدة، استمر!'), 500);
+  }
+  showScreen('scr-result');
+}
+
+/* ================================================================
+   LOCKOUT
+   ================================================================ */
+function showLockout(){
+  const a = getAttempts(state.currentGame);
+  $('#lockout').classList.add('active');
+  const tick = () => {
+    if(!a.lockUntil || a.lockUntil <= Date.now()){
+      $('#lockout').classList.remove('active');
+      updateAttemptsDisplay();
+      return;
+    }
+    const left = Math.ceil((a.lockUntil - Date.now()) / 1000);
+    const m = Math.floor(left/60), s = left%60;
+    $('#lockoutTimer').textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+    requestAnimationFrame(tick);
+  };
+  tick();
+}
+
+/* ================================================================
+   BRAIN (Simon)
+   ================================================================ */
+let memSeq = [], memState = 'watch';
+function startBrainGame(){
+  if(!useAttempt('brain')){ showLockout(); return; }
+  memSeq = [];
+  nextMemoryRound();
+}
+function nextMemoryRound(){
+  memSeq.push(ri(0,3));
+  memState = 'watch';
+  renderBrainGame();
+  playMemorySequence();
+}
+function renderBrainGame(){
+  showScreen('scr-quiz');
+  $('#qProg').style.width = '0%';
+  $('#qNum').textContent = memSeq.length;
+  $('#qTot').textContent = '∞';
+  $('#qCat').innerHTML = `<i class="fas fa-brain"></i><span>لعبة الذكاء</span>`;
+  $('#qCat').style.color = '#38bdf8';
+  $('#qHearts').innerHTML = '';
+  $('#qScore').innerHTML = `<i class="fas fa-star"></i><span>${memSeq.length}</span>`;
+  $('#qText').textContent = memState === 'watch' ? 'شاهد التسلسل بعناية...' : 'كرر التسلسل بنفس الترتيب!';
+  $('#qTimerFill').style.width = '100%';
+  $('#qTimerFill').style.background = '#38bdf8';
+  $('#qTimerNum').textContent = memSeq.length;
+  
+  const box = $('#qOpts');
+  box.innerHTML = '';
+  box.style.gridTemplateColumns = '1fr 1fr';
+  const colors = ['#ec4899','#10b981','#fbbf24','#38bdf8'];
+  const icons = ['fa-circle','fa-square','fa-star','fa-heart'];
+  for(let i=0;i<4;i++){
+    const b = document.createElement('button');
+    b.className = 'q-opt';
+    b.style.background = 'rgba(2,6,23,.6)';
+    b.style.borderColor = colors[i];
+    b.style.minHeight = '80px';
+    b.style.justifyContent = 'center';
+    b.dataset.idx = i;
+    b.innerHTML = `<i class="fas ${icons[i]}" style="font-size:32px;color:${colors[i]}"></i>`;
+    b.onclick = () => onMemoryTap(i);
+    box.appendChild(b);
+  }
+  $$('.pu').forEach(p => p.disabled = true);
+}
+async function playMemorySequence(){
+  const box = $('#qOpts');
+  const buttons = box.querySelectorAll('.q-opt');
+  for(const idx of memSeq){
+    await sleep(300);
+    const btn = buttons[idx];
+    if(btn){
+      btn.style.transform = 'scale(1.1)';
+      btn.style.boxShadow = '0 0 30px ' + btn.style.borderColor;
+      tone(400 + idx*150, .2, 'sine', .06);
+      await sleep(450);
+      btn.style.transform = '';
+      btn.style.boxShadow = '';
+      await sleep(200);
+    }
+  }
+  memState = 'repeat';
+  $('#qText').textContent = 'كرر التسلسل بنفس الترتيب!';
+}
+let memIdx = 0;
+function onMemoryTap(idx){
+  if(memState !== 'repeat') return;
+  tone(400 + idx*150, .15, 'sine', .06);
+  if(memSeq[memIdx] === idx){
+    memIdx++;
+    if(memIdx >= memSeq.length){
+      sfxOk();
+      memIdx = 0;
+      if(memSeq.length >= 8){ finishBrainGame(); }
+      else setTimeout(nextMemoryRound, 700);
+    }
+  } else {
+    sfxNo(); vibrate([40,30,40]);
+    finishBrainGame();
+  }
+}
+function finishBrainGame(){
+  const score = memSeq.length - 1;
+  if(!save.stats) save.stats = {totalStars:0,totalGames:0,bestStreak:0,totalLevels:0};
+  save.stats.totalGames++; save.stats.totalLevels++;
+  const stars = Math.min(3, Math.floor(score/2));
+  save.stats.totalStars += stars;
+  persist();
+  addAttempts('brain', 2);
+  $('#resStars').innerHTML = [1,2,3].map(i =>
+    `<i class="fas fa-star" style="color:${i<=stars?'var(--gold)':'rgba(255,255,255,.15)'};animation:starPop .5s ${i*0.1}s backwards"></i>`
+  ).join('');
+  $('#resTitle').textContent = score >= 5 ? 'ذاكرة حديدية! 🧠' : score >= 3 ? 'جيد!' : 'تحتاج تدريب 💪';
+  $('#resScore').textContent = score;
+  $('#resCorrect').textContent = score;
+  $('#resAcc').textContent = '—';
+  $('#resStreak').textContent = score;
+  $('#resTime').textContent = '—';
+  $('#btnNextLevel').style.display = 'none';
+  showScreen('scr-result');
+}
+
+/* ================================================================
+   INTERACTIVE (Reaction)
+   ================================================================ */
+let reactionStartTime = 0, reactionTimeout = null;
+function startInteractiveGame(){
+  if(!useAttempt('interactive')){ showLockout(); return; }
+  showScreen('scr-quiz');
+  $('#qCat').innerHTML = `<i class="fas fa-hand-pointer"></i><span>تفاعل</span>`;
+  $('#qCat').style.color = '#ef4444';
+  $('#qHearts').innerHTML = '';
+  $('#qScore').innerHTML = `<i class="fas fa-stopwatch"></i><span>0</span>`;
+  $('#qProg').style.width = '0%';
+  $('#qNum').textContent = '1';
+  $('#qTot').textContent = '5';
+  $('#qTimerFill').style.width = '100%';
+  $('#qTimerNum').textContent = '—';
+  $('#qText').textContent = 'استعد...';
+  $$('.pu').forEach(p => p.disabled = true);
+  
+  const box = $('#qOpts');
+  box.innerHTML = '';
+  box.style.gridTemplateColumns = '1fr';
+  const btn = document.createElement('button');
+  btn.className = 'q-opt';
+  btn.style.minHeight = '200px';
+  btn.style.background = 'rgba(239,68,68,.3)';
+  btn.style.borderColor = '#ef4444';
+  btn.style.justifyContent = 'center';
+  btn.style.fontSize = '22px';
+  btn.style.fontWeight = '900';
+  btn.textContent = 'انتظر... لا تضغط';
+  btn.onclick = () => {};
+  box.appendChild(btn);
+  
+  startReactionRound(btn, 0, []);
+}
+function startReactionRound(btn, round, times){
+  const delay = ri(1500, 4000);
+  btn.style.background = 'rgba(239,68,68,.3)';
+  btn.style.borderColor = '#ef4444';
+  btn.textContent = 'انتظر... لا تضغط';
+  reactionTimeout = setTimeout(() => {
+    btn.style.background = 'rgba(16,185,129,.5)';
+    btn.style.borderColor = '#10b981';
+    btn.textContent = 'اضغط الآن!';
+    reactionStartTime = performance.now();
+    btn.onclick = () => {
+      const time = Math.round(performance.now() - reactionStartTime);
+      times.push(time);
+      sfxOk();
+      round++;
+      if(round >= 5){ finishReaction(times); }
+      else {
+        $('#qNum').textContent = round + 1;
+        startReactionRound(btn, round, times);
+      }
+    };
+  }, delay);
+}
+function finishReaction(times){
+  clearTimeout(reactionTimeout);
+  const avg = Math.round(times.reduce((a,b)=>a+b,0) / times.length);
+  const best = Math.min(...times);
+  if(!save.stats) save.stats = {totalStars:0,totalGames:0,bestStreak:0,totalLevels:0};
+  save.stats.totalGames++; save.stats.totalLevels++;
+  const stars = avg < 300 ? 3 : avg < 500 ? 2 : 1;
+  save.stats.totalStars += stars;
+  persist();
+  addAttempts('interactive', 2);
+  $('#resStars').innerHTML = [1,2,3].map(i =>
+    `<i class="fas fa-star" style="color:${i<=stars?'var(--gold)':'rgba(255,255,255,.15)'}"></i>`
+  ).join('');
+  $('#resTitle').textContent = avg < 300 ? 'سرعة البرق! ⚡' : avg < 500 ? 'ممتاز!' : 'جيد!';
+  $('#resScore').textContent = avg;
+  $('#resCorrect').textContent = 'متوسط ' + avg + 'ms';
+  $('#resAcc').textContent = 'أفضل ' + best + 'ms';
+  $('#resStreak').textContent = '—';
+  $('#resTime').textContent = '5 محاولات';
+  $('#btnNextLevel').style.display = 'none';
+  sfxWin();
+  showScreen('scr-result');
+}
+
+/* ================================================================
+   MATCHING
+   ================================================================ */
+let matchState = {items:[], selected:null, matched:0, moves:0, total:0};
+function startMatchingGame(){
+  if(!useAttempt('matching')){ showLockout(); return; }
+  showScreen('scr-quiz');
+  $('#qCat').innerHTML = `<i class="fas fa-link"></i><span>توصيلات</span>`;
+  $('#qCat').style.color = '#a855f7';
+  $('#qHearts').innerHTML = '';
+  $('#qScore').innerHTML = `<i class="fas fa-star"></i><span>0</span>`;
+  $('#qProg').style.width = '0%';
+  $('#qNum').textContent = '1';
+  $('#qTot').textContent = '6';
+  $('#qTimerFill').style.width = '100%';
+  $('#qTimerNum').textContent = '—';
+  $('#qText').textContent = 'صِل كل دولة بعاصمتها';
+  $$('.pu').forEach(p => p.disabled = true);
+  
+  const countries = shuffle([...COUNTRIES]).slice(0, 6);
+  const items = [];
+  countries.forEach(c => {
+    items.push({id:c[0], type:'country', text:c[0], pair:c[1], matched:false});
+    items.push({id:c[1], type:'capital', text:c[1], pair:c[0], matched:false});
+  });
+  matchState = {items:shuffle(items), selected:null, matched:0, moves:0, total:items.length};
+  renderMatchBoard();
+}
+function renderMatchBoard(){
+  const box = $('#qOpts');
+  box.innerHTML = '';
+  box.style.gridTemplateColumns = '1fr 1fr';
+  box.style.gap = '6px';
+  matchState.items.forEach((item, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'q-opt';
+    btn.style.minHeight = '60px';
+    btn.style.fontSize = '13px';
+    btn.style.padding = '8px';
+    btn.dataset.i = i;
+    btn.innerHTML = `<i class="fas ${item.type==='country'?'fa-flag':'fa-city'}" style="color:${item.type==='country'?'#fbbf24':'#38bdf8'}"></i> <span>${item.text}</span>`;
+    if(item.matched){ btn.classList.add('ok'); btn.style.opacity = '.4'; btn.disabled = true; }
+    if(matchState.selected === i) btn.classList.add('ok');
+    btn.onclick = () => onMatchTap(i);
+    box.appendChild(btn);
+  });
+}
+function onMatchTap(i){
+  const item = matchState.items[i];
+  if(item.matched) return;
+  if(matchState.selected === null){ matchState.selected = i; renderMatchBoard(); return; }
+  if(matchState.selected === i){ matchState.selected = null; renderMatchBoard(); return; }
+  const first = matchState.items[matchState.selected];
+  const second = item;
+  matchState.moves++;
+  const isMatch = (first.type !== second.type) && first.pair === second.text;
+  if(isMatch){
+    sfxOk();
+    first.matched = true;
+    second.matched = true;
+    matchState.matched += 2;
+    matchState.selected = null;
+    $('#qScore').innerHTML = `<i class="fas fa-star"></i><span>${Math.max(0, 100 - matchState.moves*10)}</span>`;
+    $('#qNum').textContent = Math.floor(matchState.matched/2) + 1;
+    renderMatchBoard();
+    if(matchState.matched >= matchState.items.length){ setTimeout(finishMatching, 500); }
+  } else {
+    sfxNo();
+    matchState.selected = null;
+    vibrate([30,20,30]);
+    renderMatchBoard();
+  }
+}
+function finishMatching(){
+  const score = Math.max(0, 100 - matchState.moves*10);
+  if(!save.stats) save.stats = {totalStars:0,totalGames:0,bestStreak:0,totalLevels:0};
+  save.stats.totalGames++; save.stats.totalLevels++;
+  const stars = score >= 70 ? 3 : score >= 40 ? 2 : 1;
+  save.stats.totalStars += stars;
+  persist();
+  addAttempts('matching', 2);
+  $('#resStars').innerHTML = [1,2,3].map(i =>
+    `<i class="fas fa-star" style="color:${i<=stars?'var(--gold)':'rgba(255,255,255,.15)'}"></i>`
+  ).join('');
+  $('#resTitle').textContent = score >= 70 ? 'ممتاز! 🎯' : score >= 40 ? 'جيد!' : 'حاول مرة أخرى';
+  $('#resScore').textContent = score;
+  $('#resCorrect').textContent = '6 أزواج';
+  $('#resAcc').textContent = matchState.moves + ' محاولات';
+  $('#resStreak').textContent = '—';
+  $('#resTime').textContent = '—';
+  $('#btnNextLevel').style.display = 'none';
+  sfxWin();
+  showScreen('scr-result');
+}
+
+/* ================================================================
+   CROSSWORD (Fill blank)
+   ================================================================ */
+function startCrosswordGame(){
+  if(!useAttempt('crossword')){ showLockout(); return; }
+  showScreen('scr-quiz');
+  $('#qCat').innerHTML = `<i class="fas fa-table-cells"></i><span>كلمات متقاطعة</span>`;
+  $('#qCat').style.color = '#ec4899';
+  $('#qHearts').innerHTML = '';
+  $('#qScore').innerHTML = `<i class="fas fa-star"></i><span>0</span>`;
+  $('#qProg').style.width = '0%';
+  $('#qNum').textContent = '1';
+  $('#qTot').textContent = '5';
+  $('#qTimerFill').style.width = '100%';
+  $('#qTimerNum').textContent = '—';
+  $('#qText').textContent = 'اكتب الكلمة الناقصة';
+  $$('.pu').forEach(p => p.disabled = true);
+  
+  const words = shuffle(BANK_CULTURE.filter(q => q.a.length >= 3 && q.a.length <= 12 && !/\d/.test(q.a))).slice(0, 5);
+  let idx = 0, score = 0;
+  const askWord = () => {
+    if(idx >= words.length){ finishCrossword(score, words.length); return; }
+    const w = words[idx];
+    const hidden = w.a.split('').map((c, i) => i === 0 || i === w.a.length-1 ? c : '_').join('');
+    $('#qNum').textContent = idx + 1;
+    $('#qText').textContent = w.q + ' | ' + hidden + ' (' + w.a.length + ' حروف)';
+    const box = $('#qOpts');
+    box.innerHTML = '';
+    box.style.gridTemplateColumns = '1fr';
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.placeholder = 'اكتب الكلمة...';
+    input.className = 'name-input';
+    input.style.marginBottom = '8px';
+    box.appendChild(input);
+    const submit = document.createElement('button');
+    submit.className = 'btn primary';
+    submit.textContent = 'تحقق';
+    submit.onclick = () => {
+      if(input.value.trim() === w.a){
+        sfxOk();
+        score++;
+        idx++;
+        $('#qScore').innerHTML = `<i class="fas fa-star"></i><span>${score}</span>`;
+        askWord();
+      } else {
+        sfxNo();
+        input.style.borderColor = '#ef4444';
+        setTimeout(() => { input.value = ''; input.style.borderColor = ''; }, 600);
+      }
+    };
+    input.addEventListener('keypress', e => { if(e.key === 'Enter') submit.click(); });
+    input.focus();
+    box.appendChild(submit);
+  };
+  askWord();
+}
+function finishCrossword(score, total){
+  if(!save.stats) save.stats = {totalStars:0,totalGames:0,bestStreak:0,totalLevels:0};
+  save.stats.totalGames++; save.stats.totalLevels++;
+  const stars = score >= 4 ? 3 : score >= 3 ? 2 : 1;
+  save.stats.totalStars += stars;
+  persist();
+  addAttempts('crossword', 2);
+  $('#resStars').innerHTML = [1,2,3].map(i =>
+    `<i class="fas fa-star" style="color:${i<=stars?'var(--gold)':'rgba(255,255,255,.15)'}"></i>`
+  ).join('');
+  $('#resTitle').textContent = score >= 4 ? 'ممتاز! 🌟' : score >= 2 ? 'جيد!' : 'حاول مرة أخرى';
+  $('#resScore').textContent = score;
+  $('#resCorrect').textContent = score + '/' + total;
+  $('#resAcc').textContent = Math.round(score/total*100) + '%';
+  $('#resStreak').textContent = '—';
+  $('#resTime').textContent = '—';
+  $('#btnNextLevel').style.display = 'none';
+  if(stars >= 2){ sfxWin(); launchConfetti(); }
+  showScreen('scr-result');
+}
+
+/* ================================================================
+   EVENTS
+   ================================================================ */
+$$('.tab-btn').forEach(btn => {
+  btn.onclick = () => {
+    sfxTap();
+    const tab = btn.dataset.tab;
+    $$('.tab-btn').forEach(b => b.classList.toggle('active', b === btn));
+    if(tab === 'home'){ renderHome(); showScreen('scr-home'); }
+    else if(tab === 'quiz'){ state.currentGame = 'quiz'; openCategoryHub('quiz'); }
+    else if(tab === 'puzzles'){ state.currentGame = 'puzzles'; openCategoryHub('puzzles'); }
+    else if(tab === 'brain'){ startBrainGame(); }
+    else if(tab === 'more'){ showMoreGames(); }
+  };
+});
+
+function showMoreGames(){
+  state.currentGame = 'quiz';
+  showScreen('scr-hub');
+  $('#hubTitle').textContent = 'المزيد من الألعاب';
+  const content = $('#hubContent');
+  content.innerHTML = '';
+  const grid = document.createElement('div');
+  grid.className = 'mode-grid';
+  const moreGames = [
+    {id:'matching', name:'توصيلات', icon:'fa-link', color:'#a855f7', desc:'صِل كل دولة بعاصمتها في أسرع وقت'},
+    {id:'crossword', name:'كلمات متقاطعة', icon:'fa-table-cells', color:'#ec4899', desc:'اكتب الكلمات الناقصة بناءً على التلميح'},
+    {id:'interactive', name:'تفاعل', icon:'fa-hand-pointer', color:'#ef4444', desc:'اختبر سرعة رد فعلك · اضغط عند اللون الأخضر'}
+  ];
+  moreGames.forEach(g => {
+    const card = document.createElement('button');
+    card.className = 'mode-card';
+    card.style.setProperty('--c', g.color);
+    card.innerHTML = `
+      <div class="mode-icon"><i class="fas ${g.icon}"></i></div>
+      <div class="mode-info">
+        <div class="mode-title">${g.name}</div>
+        <div class="mode-desc">${g.desc}</div>
+      </div>
+      <i class="fas fa-chevron-left mode-arrow"></i>
+    `;
+    card.onclick = () => {
+      if(g.id === 'matching') startMatchingGame();
+      else if(g.id === 'crossword') startCrosswordGame();
+      else if(g.id === 'interactive') startInteractiveGame();
+    };
+    grid.appendChild(card);
+  });
+  content.appendChild(grid);
+}
+
+$('#btnNextLevel').onclick = () => { sfxTap(); startQuiz(state.currentLevel + 1); };
+$('#btnRetry').onclick = () => {
+  sfxTap();
+  if(state.currentGame === 'quiz' && state.currentCategory) startQuiz(state.currentLevel);
+  else if(state.currentGame === 'brain') startBrainGame();
+  else if(state.currentGame === 'interactive') startInteractiveGame();
+  else if(state.currentGame === 'matching') startMatchingGame();
+  else if(state.currentGame === 'crossword') startCrosswordGame();
+  else { renderHome(); showScreen('scr-home'); }
+};
+$('#btnBackHome').onclick = () => { sfxTap(); renderHome(); showScreen('scr-home'); $$('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === 'home')); };
+
+document.addEventListener('click', e => {
+  if(e.target.closest('[data-back]')){
+    sfxTap();
+    const to = e.target.closest('[data-back]').dataset.back;
+    if(to === 'home'){ renderHome(); showScreen('scr-home'); }
+    else if(to === 'hub'){ openCategoryHub(state.currentGame); }
+    else if(to === 'settings'){ showScreen('scr-settings'); }
+  }
+  if(e.target.closest('[data-quit-quiz]')){
+    showModal('إنهاء المرحلة؟', 'سيتم فقدان التقدم في هذه المرحلة', () => {
+      stopQuizTimer(); stopSpeech(); renderHome(); showScreen('scr-home');
+    });
+  }
+});
+
+$('#btnSpeakQ').onclick = () => {
+  const q = state.questions?.[state.idx];
+  if(q) speak(q.q);
+};
+
+$('#btnVoice').onclick = () => {
+  save.settings.sound = !save.settings.sound;
+  save.settings.music = save.settings.sound;
+  save.settings.speech = save.settings.sound;
+  persist();
+  renderHome();
+  if(!save.settings.sound){ stopSpeech(); stopBGM(); }
+  else { startBGM(); sfxTap(); }
+};
+
+$('#btnBgmToggle').onclick = () => {
+  save.settings.music = !save.settings.music;
+  persist();
+  if(save.settings.music) startBGM(); else stopBGM();
+  renderHome();
+  sfxTap();
+};
+
+$('#btnSettings').onclick = () => { sfxTap(); renderSettings(); showScreen('scr-settings'); };
+
+function renderSettings(){
+  $('#setName').textContent = save.profile?.name || 'بطل';
+  $('#setAge').textContent = AGE_LABELS[save.profile?.ageGroup] || '3-5';
+  $('#togSound').classList.toggle('on', save.settings.sound);
+  $('#togMusic').classList.toggle('on', save.settings.music);
+  $('#togSpeech').classList.toggle('on', save.settings.speech);
+  const rateLabel = save.settings.speechRate >= 1 ? 'سريع' : save.settings.speechRate <= 0.7 ? 'بطيء' : 'عادي';
+  $('#btnSpeechRate').textContent = rateLabel;
+}
+$('#togSound').onclick = () => { save.settings.sound = !save.settings.sound; persist(); renderSettings(); if(!save.settings.sound) stopBGM(); else startBGM(); };
+$('#togMusic').onclick = () => { save.settings.music = !save.settings.music; persist(); renderSettings(); if(save.settings.music) startBGM(); else stopBGM(); };
+$('#togSpeech').onclick = () => { save.settings.speech = !save.settings.speech; persist(); renderSettings(); if(!save.settings.speech) stopSpeech(); };
+$('#btnSpeechRate').onclick = () => {
+  const rates = [0.7, 0.9, 1.1];
+  const current = save.settings.speechRate || 0.9;
+  const i = rates.indexOf(current);
+  save.settings.speechRate = rates[(i+1) % rates.length];
+  persist();
+  renderSettings();
+  speak('هذه سرعة القراءة', save.settings.speechRate);
+};
+$('#btnEditName').onclick = () => {
+  const newName = prompt('الاسم الجديد:', save.profile.name);
+  if(newName && newName.trim().length >= 2){
+    save.profile.name = newName.trim();
+    persist(); renderSettings(); renderHome(); sfxOk();
+  }
+};
+$('#btnEditAge').onclick = () => {
+  const newAge = prompt('العمر الجديد (3-5 / 6-8 / 9-12 / 13-18 / 19+):', save.profile.ageGroup);
+  if(newAge && ['3-5','6-8','9-12','13-18','19+'].includes(newAge.trim())){
+    save.profile.ageGroup = newAge.trim();
+    save.profile.age = newAge.trim();
+    persist(); renderSettings(); renderHome(); sfxOk();
+  }
+};
+$('#btnReset').onclick = () => {
+  showModal('حذف كل التقدم؟', 'هذا سيحذف كل تقدمك ومحاولاتك. لا يمكن التراجع!', () => {
+    save.progress = {}; save.attempts = {}; save.seen = {};
+    save.stats = {totalStars:0,totalGames:0,bestStreak:0,totalLevels:0};
+    persist(); renderSettings(); renderHome(); sfxOk();
+  });
+};
+$('#btnCloseLockout').onclick = () => $('#lockout').classList.remove('active');
+
+document.addEventListener('keydown', e => {
+  if(!$('#scr-quiz').classList.contains('active') || state.answered) return;
+  const map = {'1':0,'2':1,'3':2,'4':3};
+  if(e.key in map){
+    const opts = $$('.q-opt');
+    if(opts[map[e.key]]) opts[map[e.key]].click();
+  }
+});
+
+/* ================================================================
+   INIT
+   ================================================================ */
+function init(){
+  if(save.profile){
+    renderHome();
+    showScreen('scr-home');
+    if(save.settings.music && save.settings.sound) startBGM();
+    setTimeout(() => {
+      if(save.settings.speech){
+        const greet = Math.random() < 0.5 ? `أهلاً بعودتك يا ${save.profile.name}` : `وحشتني يا ${save.profile.name}`;
+        speak(greet);
+      }
+    }, 800);
+  } else {
+    initRegistration();
+    showScreen('scr-splash');
+    setTimeout(() => { speak('أهلاً بك في عالم جمجم! من فضلك اكتب اسمك'); }, 1000);
+  }
+  setInterval(updateAttemptsDisplay, 1000);
+}
+
+init();
+</script>
+</body>
+</html>
